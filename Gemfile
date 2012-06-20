@@ -11,10 +11,14 @@ end
 
 group :test, :development do
   gem 'pg'
+  gem 'omniauth-google-apps'
+  gem 'foreman'
+  gem 'thin'
   gem 'heroku'
 end
 
 group :production do
   gem 'pg'
+  gem 'omniauth-google-apps'
   gem 'thin'
 end

@@ -1,3 +1,7 @@
+# this is required to stop ruby from buffering stdout
+# https://github.com/ddollar/foreman/wiki/Missing-Output
+$stdout.sync = true
+
 Rekk::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
