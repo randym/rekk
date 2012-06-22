@@ -9,7 +9,17 @@ class ClientsController < ApplicationController
       format.json { render json: @clients }
     end
   end
-  
+  def create
+     contacts = params['client'].delete(:contacts)
+    @client = Client.new(params['client'])
+    @client.save
+    contacts.each do |contact| 
+      contact = Contact.new(contact)
+      contact.client = @client
+      contact.save()
+    end
+    redirect_to clients_path
+  end 
   def show
 
   end

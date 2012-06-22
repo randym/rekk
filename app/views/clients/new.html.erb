@@ -29,7 +29,7 @@
         client[contacts][][phone]
         and push the name into a li
         -->
-        <ul class="unstyled">
+        <ul id="contacts" class="unstyled">
         </ul>
         <span class="btn" id="add_contact"><i class="icon-plus"></i></span>
         <a class="btn" id="remove_contact" href="#"><i class="icon-minus"></i></a>
@@ -60,10 +60,20 @@
   </div>
 </div>
 <%= render 'add_contact' %>
+
 <script type="text/javascript">
   $(document).ready(function() {
       $('#add_contact').click(function() {
         $('#add_contact_form').modal()
         });
       });
+  var client =  {
+                  add_contact : function(contact_info) {
+                                  for(var x in contact_info) {
+                                    var input_html = ['<input type="hidden" name="client[contacts][][',x,']" value="',contact_info[x], '">'].join('');
+                                    $('#contacts').parent().append(input_html);
+                                  }
+                                  $('#contacts').append(['<li>', contact_info.name, '</li>'].join(''))
+                  }
+  }    
 </script>

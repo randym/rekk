@@ -8,6 +8,9 @@
       <ul class="nav nav-list">
         <li class="nav-header"><%=I18n.t :clients %></li>
         <%if @clients.size > 0 %>
+          <% @clients.each do |client|%>
+            <li><%=client.name%>(<%=client.local_name%>)</li>
+          <% end %>
         <% else %>
           <%= I18n.t :no_data %>
         <% end %>
