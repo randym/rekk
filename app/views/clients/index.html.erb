@@ -1,0 +1,27 @@
+<div class="row-fluid">
+  <div class="span3">
+    <!-- TODO: Move this to a partial and pass the collection and url for searching -->
+    <div class="well sidebar-nav">
+        <input class="input-medium search-query search" type="text" placeholder="find a client..."/>
+        <label class="checkbox"> <input type="checkbox"><%= I18n.t :only_my_clients%></label>
+      <hr>
+      <ul class="nav nav-list">
+        <li class="nav-header"><%=I18n.t :clients %></li>
+        <%if @clients.size > 0 %>
+        <% else %>
+          <%= I18n.t :no_data %>
+        <% end %>
+      </ul>
+    </div>
+    </div><div class="span9">
+    <!-- TODO: Move this to a partial or helper? -->
+    <div class="hero-unit">
+      <h1><%= I18n.t :clients %></h1>
+      <p><%= I18n.t :clients_introduction %></p>
+      <p>
+        <%= link_to I18n.t(:create_client), new_client_path, class: "btn btn-primary btn-large" %>
+      </p>
+       </div>
+  </div>
+</div>
+</div>

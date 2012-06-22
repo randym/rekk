@@ -1,10 +1,10 @@
 Rekk::Application.routes.draw do
 
 
-  resources :users
-
+  resources :users, :only => [:index, :show, :destroy]
+  resources :clients
   resources :roles
- 
+  get   '/logout', :to => 'sessions#logout'
   get   '/login', :to => 'sessions#new', :as => :login
   match '/auth/:provider/callback', :to => 'sessions#create'
   match '/auth/failure', :to => 'sessions#failure' 

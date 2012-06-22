@@ -1,5 +1,13 @@
 class User < ActiveRecord::Base
   has_many :roles, :through => :user_roles 
-  attr_accessible :name, :email, :auth_hash
+  attr_accessible :name, :email, :identity
   accepts_nested_attributes_for :roles 
+
+  def self.authenticate(omniauth_auth)
+    omniauth = OmniauthParser.new(omniauth_auth)
+    user = User.find_or_create_by_email(omniauth.email)
+    user.update_attributes(omniauth.user_hash)
+    user
+  end
+  
 end

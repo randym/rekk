@@ -15,6 +15,7 @@ group :test, :development do
   gem 'foreman'
   gem 'thin'
   gem 'heroku'
+  gem "rspec-rails"
 end
 
 group :production do

@@ -2,4 +2,17 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  hello: "Hello world"
+  application_title: REKK
+  users: Users  
+  clients: Clients
+  products: Products
+  work_orders: Work Orders
+  no_data: No Data...
+  clients_introduction: A client is an organization or person that originates a work order. Select a client from the list or use the button below to create a new client.
+  create_client: Make a New Client
+  only_my_clients: Only show my clients
+  activerecord:
+    models:
+      client:
+        name: Name
+        local_name: Local Name
