@@ -3,16 +3,26 @@
 
 en:
   application_title: REKK
+  logout: logout
+  required: requried
   users: Users  
   clients: Clients
+  contacts: Contacts
   products: Products
   work_orders: Work Orders
+  search: search...
   no_data: No Data...
   clients_introduction: A client is an organization or person that originates a work order. Select a client from the list or use the button below to create a new client.
+  new_client_legend_html: "Congradulations on your new client!<p>Fill in the fields below to register them in the system.</p> "
   create_client: Make a New Client
-  only_my_clients: Only show my clients
+  only_my_items: Only show my stuff
+  add_contact: Add a contact
   activerecord:
     models:
       client:
-        name: Name
-        local_name: Local Name
+        name: Client Name
+        local_name: Client Local Name
+        user: Owner
+        contacts: Contacts
+        accounting_code: Accounting Code
+        memo: Memo

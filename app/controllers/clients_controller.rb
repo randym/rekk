@@ -10,26 +10,29 @@ class ClientsController < ApplicationController
     end
   end
   def create
-     contacts = params['client'].delete(:contacts)
     @client = Client.new(params['client'])
     @client.save
-    contacts.each do |contact| 
-      contact = Contact.new(contact)
-      contact.client = @client
-      contact.save()
-    end
     redirect_to clients_path
   end 
   def show
+@client = Client.find(params[:id])
 
   end
   def new
-    @client = Client.new()
+    @client = Client.new(:user => current_user)
   end
+
   def edit
-
+    @client = Client.find(params[:id])
   end
 
+  def update
+    @client = Client.find(params[:id])
+    puts params[:client]
+    @client.update_attributes(params[:client])
+    render(:action => :edit)
+  end
+  
   def destroy
 
   end

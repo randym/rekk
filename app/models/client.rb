@@ -1,6 +1,22 @@
 class Client < ActiveRecord::Base
-  has_many :contacts
-  belongs_to :user
-  attr_accessible :name, :local_name, :accounting_code, :user, :contacts, :memo
-  accepts_nested_attributes_for :contacts, allow_destroy: true
+  #relations
+  has_many :contacts, inverse_of: :client
+  belongs_to :user, inverse_of: :clients
+  #
+  # attribute whitelist
+  attr_accessible :name, 
+                  :local_name, 
+                  :accounting_code, 
+                  :user, 
+                  :contacts_attributes,
+                  :memo,
+                  :user_id
+  
+  accepts_nested_attributes_for :contacts, 
+    allow_destroy: true, 
+    reject_if: proc  { |attributes| 
+      attributes[:name].blank? || attributes[:email].blank?
+    }
+
+
 end

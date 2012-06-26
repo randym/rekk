@@ -24,3 +24,4 @@
 //= require bootstrap-collapse.js
 //= require bootstrap-carousel.js
 //= require bootstrap-typeahead.js
+//= require reductive_search.js

@@ -1,0 +1,41 @@
+<% hidden = false unless hidden %>
+<div class="contact-card<% if hidden %>-template<%end%>">
+  <% if contact.id %>
+    <input type=hidden name="client[contacts_attributes][][id]" value="<%=contact.id%>">
+  <% end %>
+  <input type=hidden name="client[contacts_attributes][][name]" value="<%=contact.name%>">
+  <input type=hidden name="client[contacts_attributes][][email]" value="<%=contact.email%>">
+  <input type=hidden name="client[contacts_attributes][][division]" value="<%=contact.division%>">
+  <input type=hidden name="client[contacts_attributes][][phone]" value="<%=contact.phone%>">
+  <input type=hidden name="client[contacts_attributes][][job_title]" value="<%=contact.job_title%>">
+  <% if contact.client %>
+    <span class="pull-left client-info" name='client-name'><%=link_to contact.client.name, client_path(contact.client)%></span></a>
+  <%end %>
+  <% if controller.is_a? ClientsController %>
+  <a class="btn pull-right">
+    <i class="icon-edit contact" title=""></i>
+  </a>
+  <% end %>
+  <br/>
+  <%if contact.client %>
+    <span class="pull-left client-info" name='client-local_name'><%= contact.client.local_name %></span>
+  <% end %>
+  <br/>
+  <% if controller.is_a? ClientsController %>
+  <a class="btn btn-danger pull-right">
+    <i class="icon-trash icon-white contact"></i>
+  </a>
+  <% end %>
+  <div style="padding-left: 100px;">
+    <br/>
+    <strong name='name'><%= contact.name %></strong>
+    <br/>
+    <span name="division"><%= contact.division %></span>
+    <br/>
+    <span name="job_title"><%= contact.job_title %></span>
+    <br/>
+    <br/> </div>
+  <span name="email"><%= contact.email%></span>
+  <br>
+  <span name="phone"><%= contact.phone%></span> 
+</div>

@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
   has_many :roles, :through => :user_roles 
+  has_many :clients, dependent: :destroy
   attr_accessible :name, :email, :identity
   accepts_nested_attributes_for :roles 
 

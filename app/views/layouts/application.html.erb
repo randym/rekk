@@ -28,21 +28,24 @@
               <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
-              <li><a href="#">Profile</a></li>
-              <li class="divider"></li>
               <li>
               <%= link_to I18n.t(:logout), '/logout' %>
             </ul>
           </div>
           <div class="nav-collapse">
             <ul class="nav">
-              <li class="active">
-              <%= link_to I18n.t(:users), users_path %>
-              </li>
-              <li>
+             <li <% if controller.is_a?(ClientsController) %> class="active"<% end %>>
               <%= link_to I18n.t(:clients), clients_path %>
-              </li>
-              <li><a href="#contact">Contact</a></li>
+             </li >
+              
+             <li <% if controller.is_a?(ContactsController) %> class="active"<% end %>>
+              <%= link_to I18n.t(:contacts), contacts_path %>
+             </li>
+               
+             <li <% if controller.is_a?(UsersController) %> class="active"<% end %>>
+               <%= link_to I18n.t(:users), users_path %>
+             </li>
+
             </ul>
           </div>
           <!--/.nav-collapse -->

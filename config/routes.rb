@@ -1,13 +1,15 @@
 Rekk::Application.routes.draw do
 
+  root :to => 'home#index'
 
-  resources :users, :only => [:index, :show, :destroy]
+  resources :users, only: [:index, :show, :destroy]
   resources :clients
   resources :roles
-  get   '/logout', :to => 'sessions#logout'
-  get   '/login', :to => 'sessions#new', :as => :login
-  match '/auth/:provider/callback', :to => 'sessions#create'
-  match '/auth/failure', :to => 'sessions#failure' 
+  resources :contacts, only: [:index, :show]
+  get   '/logout', to: 'sessions#logout'
+  get   '/login', to: 'sessions#new', as: :login
+  match '/auth/:provider/callback', to: 'sessions#create'
+  match '/auth/failure', to: 'sessions#failure' 
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -59,7 +61,6 @@ Rekk::Application.routes.draw do
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
   # root :to => 'welcome#index'
-  root :to => 'home#index'
   # See how all your routes lay out with "rake routes"
 
   # This is a legacy wild controller route that's not recommended for RESTful applications.
