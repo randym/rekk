@@ -2,7 +2,7 @@
       list_label: t(:clients),
       item_label: Proc.new { |item| "#{item.name}(#{item.local_name})" },
       alternate_label: I18n.t(:only_my_items),
-      alternate_path: edit_client_path(@client, alternate: 1) %>
+      alternate_path: client_path(@client, alternate: 1) %>
     <div class="span9">
            <% flash.each do |name, msg| %>
         <%= content_tag(:div, msg, :id => "flash_#{name}") %>

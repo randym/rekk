@@ -1,6 +1,10 @@
-
 <%= form_for @client, :html => { class: 'form-horizontal' } do |f| %>
-<% if @client.id %> 
+   <% if @client.id %> 
+   <% if @client.user %>
+  <%= gravatar_for @client.user.email, size: 48, style: 'position:absolute;' %>
+<% end %>
+ 
+  
   <%=link_to(client_path(@client), method: :delete, confirm: I18n.t(:confirm_delete_client), class: 'btn btn-danger pull-right') do%> 
   <i class="icon-trash icon-white"i></i>
   <% end %>
