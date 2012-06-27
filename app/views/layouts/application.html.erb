@@ -45,6 +45,9 @@
              <li <% if controller.is_a?(UsersController) %> class="active"<% end %>>
                <%= link_to I18n.t(:users), users_path %>
              </li>
+             <li <% if controller.is_a?(ProductTypesController) %> class="active"<% end %>>
+               <%= link_to I18n.t(:product_types), product_types_path %>
+             </li>
 
             </ul>
           </div>
@@ -56,7 +59,9 @@
         <%= content_tag(:div, msg, :id => "flash_#{name}") %>
       <% end %>
     <div class="container-fluid">
-     <%= yield %>
+      <div class="row-fluid">
+        <%= yield %>
+      </div>
       <hr>
       <footer>
       <p>Reallyenglish 2012</p></footer>

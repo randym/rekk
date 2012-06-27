@@ -1,18 +1,9 @@
-<div class="row-fluid">
-  <div class="span3">
     <%= render 'layouts/search_list',  items: @clients, 
-                                        list_label: t(:clients),
-                                        item_label: Proc.new { |item| "#{item.name}(#{item.local_name})" }  %>
-    <!-- TODO: Move this to a partial and pass the collection and url for searching -->
-       </div><div class="span9">
-    <!-- TODO: Move this to a partial or helper? -->
-    <div class="hero-unit">
-      <h1><%= I18n.t :clients %></h1>
-      <p><%= I18n.t :clients_introduction %></p>
-      <p>
-        <%= link_to I18n.t(:create_client), new_client_path, class: "btn btn-primary btn-large" %>
-      </p>
-       </div>
-  </div>
-</div>
-</div>
+      list_label: t(:clients),
+      item_label: Proc.new { |item| "#{item.name}(#{item.local_name})" },
+      alternate_label: I18n.t(:only_my_items),
+      alternate_path: clients_path(only_my_items: 1) %>
+    <%= render 'layouts/index', title: I18n.t(:clients), 
+      intro: I18n.t(:clients_introduction),
+      button: I18n.t(:create_client),
+      path: new_client_path %> 

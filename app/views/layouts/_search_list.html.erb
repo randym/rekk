@@ -1,25 +1,33 @@
 <%
-#  @param items [Array] The list of items to render
-#  @param list_label [String] The label for the list (e.g. what are these things?)
-#  @param item_label [Proc|Lambda] A funtion that takes an item and returns the display name in the list.
+    #  @param items [Array] The list of items to render
+  #  @param list_label [String] The label for the list (e.g. what are these things?)
+  #  @param item_label [Proc|Lambda] A funtion that takes an item and returns the display name in the list.
 %>
-<div class="well sidebar-nav">
-  <input class="input-medium search-query search" type="text" placeholder="<%= I18n.t(:search)%>"/>
-  <label class="checkbox"> <input type="checkbox"><%= I18n.t :only_my_items%></label>
-  <hr>
-  <ul class="nav nav-list">
-    <li class="nav-header"><%= list_label %></li>
-    <%if items.size > 0 %>
-      <% items.each do |item|%>
-        <li class="searchable-item"><%= link_to item_label.call(item), item%></li>
+<div class="span3">
+  <div class="well sidebar-nav">
+    <input class="input-medium search-query search" type="text" placeholder="<%= I18n.t(:search)%>"/>
+    <label class="checkbox">
+      <% if params[:only_my_items] == "1" %>
+        <%= link_to I18n.t(:all_items), clients_path %>
+      <% else %>
+        <%= link_to alternate_label, alternate_path %>
+      <% end %> 
+    </label>
+    <hr>
+    <ul class="nav nav-list">
+      <li class="nav-header"><%= list_label %></li>
+      <%if items.size > 0 %>
+        <% items.each do |item|%>
+          <li class="searchable-item"><%= link_to item_label.call(item), item%></li>
+        <% end %>
+      <% else %>
+        <%= I18n.t :no_data %>
       <% end %>
-    <% else %>
-      <%= I18n.t :no_data %>
-    <% end %>
-  </ul>
+    </ul>
+  </div>
+  <script>
+    $('document').ready(function() {
+      ReductiveSearch.init( { input: '.search', target: '.searchable-item'} );
+    })
+  </script>
 </div>
-<script>
-$('document').ready(function() {
-  ReductiveSearch.init( { input: '.search', target: '.searchable-item'} );
-})
-</script>

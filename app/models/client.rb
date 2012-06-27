@@ -18,5 +18,8 @@ class Client < ActiveRecord::Base
       attributes[:name].blank? || attributes[:email].blank?
     }
 
+  def self.by_user(user)
+    where(user_id:  user.id)
+  end
 
 end

@@ -3,7 +3,9 @@ class ClientsController < ApplicationController
 
   def index
     @clients = Client.all
-
+    if params[:only_my_items]
+      @clients = Client.by_user(current_user).all
+    end
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @clients }
