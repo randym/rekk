@@ -23,15 +23,11 @@ class ClientsController < ApplicationController
    @client = Client.new(:user => current_user)
   end
 
-  def edit
-    redirect_to client_path(params[:id])
-  end
-  
   def update
     client = Client.find(params[:id])
     client.update_attributes(params[:client])
     flash[:sucess] = "woot!"
-    redirect_to edit_client_path(client)
+    redirect_to client_path(client)
   end
   
   def destroy

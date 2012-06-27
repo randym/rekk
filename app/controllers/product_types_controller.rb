@@ -26,7 +26,7 @@ class ProductTypesController < ApplicationController
   def update
     product_type = ProductType.find(params[:id])
     product_type.update_attributes(params[:product_type])
-    redirect_to edit_product_type_path(product_type)
+    redirect_to product_type_path(product_type)
   end
 
   private
