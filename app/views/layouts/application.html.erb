@@ -41,12 +41,16 @@
              <li <% if controller.is_a?(ContactsController) %> class="active"<% end %>>
               <%= link_to I18n.t(:contacts), contacts_path %>
              </li>
-               
+<!--               
              <li <% if controller.is_a?(UsersController) %> class="active"<% end %>>
                <%= link_to I18n.t(:users), users_path %>
              </li>
+             -->
              <li <% if controller.is_a?(ProductTypesController) %> class="active"<% end %>>
                <%= link_to I18n.t(:product_types), product_types_path %>
+             </li>
+             <li <% if controller.is_a?(ProductsController) %> class="active"<% end %>>
+               <%= link_to I18n.t(:products), products_path %>
              </li>
 
             </ul>

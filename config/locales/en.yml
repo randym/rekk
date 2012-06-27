@@ -14,10 +14,14 @@ en:
   search: search...
   no_data: No Data...
   clients_introduction: A client is an organization or person that originates a work order. Select a client from the list or use the button below to create a new client.
-  product_types_introduction: Product types are the master product type used to define a product's base. This lets us group products by thier type to aid in reporting and sales management.
+  product_types_introduction: Product types are the master product type used to define a product's base. This lets us group products by thier type to aid in reporting and sales management. Select a product type from the list or use the button below to create a new product.
+  products_introduction: A product is what you select as a line item in your work orders. Select a product from the list or use the button below to create a new product.
   new_client_legend_html: "Congradulations on your new client!<p>Fill in the fields below to register them in the system.</p> "
+  new_product_type_legend_html: "Woot! A new product for your line up!<p>Fill in he fields below to make this product type availble to new products.</p>"
+  new_product_legend_html: "Please fill in the fields below to make a new product available for your work orders."
   create_client: Make a New Client
   create_product_type: Make a new Product Type
+  create_product: Make a new Product
   all_items: Show all items
   hide_expired_items: Hide expired items
   

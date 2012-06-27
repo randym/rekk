@@ -3,7 +3,8 @@ Rekk::Application.routes.draw do
   root :to => 'home#index'
 
   resources :users, only: [:index, :show, :destroy]
-  resources :clients, :product_types
+  resources :clients
+  resources :products, :product_types, except: [:destroy, :edit]
   resources :roles
   resources :contacts, only: [:index, :show]
   get   '/logout', to: 'sessions#logout'

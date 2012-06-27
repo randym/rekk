@@ -1,0 +1,17 @@
+<%= render 'layouts/search_list',  items: @product_types, 
+  list_label: t(:product_types),
+  item_label: Proc.new { |item| item.name },
+  alternate_label: I18n.t(:hide_expired_items),
+  alternate_path: client_path(@product_types, alternate: 1) %>
+
+<div class="span9">
+
+  <% flash.each do |name, msg| %>
+    <%= content_tag(:div, msg, :id => "flash_#{name}") %>
+  <% end %>
+
+  <div class="well">
+    <%= render 'form' %>
+  </div>
+</div>
+

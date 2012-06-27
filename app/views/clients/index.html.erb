@@ -3,6 +3,7 @@
       item_label: Proc.new { |item| "#{item.name}(#{item.local_name})" },
       alternate_label: I18n.t(:only_my_items),
       alternate_path: clients_path(alternate: 1) %>
+
     <%= render 'layouts/index', title: I18n.t(:clients), 
       intro: I18n.t(:clients_introduction),
       button: I18n.t(:create_client),

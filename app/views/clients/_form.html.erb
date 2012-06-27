@@ -1,14 +1,13 @@
 <%= form_for @client, :html => { class: 'form-horizontal' } do |f| %>
-   <% if @client.id %> 
-   <% if @client.user %>
-  <%= gravatar_for @client.user.email, size: 48, style: 'position:absolute;' %>
-<% end %>
- 
-  
-  <%=link_to(client_path(@client), method: :delete, confirm: I18n.t(:confirm_delete_client), class: 'btn btn-danger pull-right') do%> 
-  <i class="icon-trash icon-white"i></i>
+  <% unless @client.new_record? %> 
+    <% if @client.user %>
+      <%= gravatar_for @client.user.email, size: 48, style: 'position:absolute;' %>
+    <% end %>
+    <%=link_to(client_path(@client), method: :delete, confirm: I18n.t(:confirm_delete_client), class: 'btn btn-danger pull-right') do%> 
+      <i class="icon-trash icon-white"></i>
+    <% end %>
   <% end %>
-<% end %>
+
   <div class="control-group extended-edit">
     <label class="control-label" for="name">
       <%=t :user, scope: [:activerecord, :models, :client]%>
@@ -17,19 +16,19 @@
       <%= collection_select(:client, :user_id, User.all, :id, :name) %>
     </div>
   </div>
-  
+
   <div class="control-group ">
     <label class="control-label" for="name">
-            <%=t :name, scope: [:activerecord, :models, :client]%>
+      <%=t :name, scope: [:activerecord, :models, :client]%>
     </label>
     <div class="controls">
       <%= f.text_field(:name, class: "input-xxlarge disabled", disabled: :disabled) %>
-  <div style="display: inline-block">
-    <a href="#" class="btn form-edit-link"><i class="icon-edit"></i></a>
+      <div style="display: inline-block">
+        <a href="#" class="btn form-edit-link"><i class="icon-edit"></i></a>
+      </div>
     </div>
   </div>
-  </div>
-  
+
   <div class="control-group extended-edit">
     <label class="control-label" for="local_name">
       <%=t :local_name, scope: [:activerecord, :models, :client]%>
@@ -39,111 +38,101 @@
     </div>
   </div>
 
-    <div class="control-group extended-edit">
-      <label class="control-label" for="contacts">
-        <%=t :contacts, scope: [:activerecord, :models, :client]%>
-
-        <span class="btn" id="add_contact"><i class="icon-plus"></i></span>
-      </label>
-      <div class="controls">
-         <div id="contacts">
+  <div class="control-group extended-edit">
+    <label class="control-label" for="contacts">
+      <%=t :contacts, scope: [:activerecord, :models, :client]%>
+      <span class="btn" id="add_contact"><i class="icon-plus"></i></span>
+    </label>
+    <div class="controls">
+      <div id="contacts">
         <%= render @client.contacts %>
-        <!-- NOTE: for every created and contact add in hidden inputs 
-        client[contacts_attributes][][name]
-        client[contacts_attributes][][email]
-        client[contacts_attributes][][division]
-        client[contacts_attributes][][phone]
-        and push the name into a li
-        -->
-      </div>
-      </div>
-      
-    </div>
-
-    <div class="control-group extended-edit">
-      <label class="control-label" for="accounting_code">
-        <%=t :accounting_code, scope: [:activerecord, :models, :client]%>
-      </label>
-      <div class="controls">
-        <%= f.text_field(:accounting_code, class: 'input-small')%>
       </div>
     </div>
-
-    <div class="control-group">
-      <label class="control-label" for="memo">
-        <%=t :memo, scope: [:activerecord, :models, :memo]%>
-      </label>
-      <div class="controls">
-        <%= f.text_area(:memo, :rows => 10, class: "input-xxlarge disabled", disabled: :disabled) %>
-      </div>
-    </div>
-
-    <div class="form-actions extended-edit">
-      <button type="submit" class="btn"><%=t :save%></button>
-    </div>
-
-    <% end %>
   </div>
-<%= render 'add_contact' %>
-<%= render 'contacts/contact', contact: Contact.new, hidden: true %>
-<script type="text/javascript">
-  $(document).ready(function() {
-      $('.icon-edit.contact').live('click', function() { client.edit_contact(this) }) 
-      $('.icon-trash.contact').live('click', function() {client.remove_contact(this) })
-      $('.form-edit-link').live('click', function() { client.edit(this) })
-      $('#add_contact').click(function() {
-        $('#add_contact_form').removeData('contact-card')
-        $('#add_contact_form').modal()
+
+  <div class="control-group extended-edit">
+    <label class="control-label" for="accounting_code">
+      <%=t :accounting_code, scope: [:activerecord, :models, :client]%>
+    </label>
+    <div class="controls">
+      <%= f.text_field(:accounting_code, class: 'input-small')%>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label class="control-label" for="memo">
+      <%=t :memo, scope: [:activerecord, :models, :memo]%>
+    </label>
+    <div class="controls">
+      <%= f.text_area(:memo, :rows => 10, class: "input-xxlarge disabled", disabled: :disabled) %>
+    </div>
+  </div>
+
+  <div class="form-actions extended-edit">
+    <button type="submit" class="btn"><%=t :save%></button>
+  </div>
+
+<% end %>
+  <%= render 'add_contact' %>
+  <%= render 'contacts/contact', contact: Contact.new, hidden: true %>
+  <script type="text/javascript">
+    $(document).ready(function() {
+        $('.btn.edit-contact').live('click', function() { client.edit_contact(this) }) 
+        $('.btn.remove-contact').live('click', function() {client.remove_contact(this) })
+        $('.form-edit-link').live('click', function() { client.edit(this) })
+        $('#add_contact').click(function() {
+          $('#add_contact_form').removeData('contact-card')
+          $('#add_contact_form').modal()
+          });
         });
-      });
 var client = {
 edit: function(link) {
         var form = $(link).closest('form')
-        form.find(':disabled').removeAttr('disabled')
-        form.find('.extended-edit').show()
-        $(link).hide()
+          form.find(':disabled').removeAttr('disabled')
+          form.find('.extended-edit').show()
+          $(link).hide()
       },
 update_contact_inputs: function(contact, data) {
                          var contact_prefix = 'client[contacts_attributes][][';
                          for(var x in data) {
                            var input_selector = ["[name='",contact_prefix,x,"]']"].join('')
-                           var label_selector = ["[name='",x,"']"].join('')
-                           contact.find(input_selector).val(data[x])
-                           contact.find(label_selector).text(data[x])
+                             var label_selector = ["[name='",x,"']"].join('')
+                             contact.find(input_selector).val(data[x])
+                             contact.find(label_selector).text(data[x])
                          }
                        },
 add_contact : function(contact_info) {
                 var contact_card = $('#add_contact_form').data('contact-card')
-                  
+
                   if(contact_card == undefined) {
                     contact_card = $('.contact-card-template').clone();
                     contact_card.removeClass('contact-card-template')
-                    contact_card.addClass('contact-card')
-                    contact_card.appendTo($('#contacts'))
+                      contact_card.addClass('contact-card')
+                      contact_card.appendTo($('#contacts'))
                   }
-                 contact_card.find('[name="client-name"]').text($('#client_name').val())
-                 contact_card.find('[name="client-local_name"]').text($('#client_local_name').val())  
-                 this.update_contact_inputs(contact_card, contact_info)
+                contact_card.find('[name="client-name"]').text($('#client_name').val())
+                  contact_card.find('[name="client-local_name"]').text($('#client_local_name').val())  
+                  this.update_contact_inputs(contact_card, contact_info)
               },
 edit_contact : function(edit_el) {
-     contact_card = $(edit_el).closest('.contact-card')
-     inputs = $('#add_contact_form input')
-     $.map(inputs, function(input, index) {
-         input.value = contact_card.find('[name="' + input.id + '"]').text()
-     })
-     $('#add_contact_form').data('contact-card', contact_card);
-     $('#add_contact_form').modal();
-},
+                 contact_card = $(edit_el).closest('.contact-card')
+                   inputs = $('#add_contact_form input')
+                   $.map(inputs, function(input, index) {
+                       input.value = contact_card.find('[name="' + input.id + '"]').text()
+                       })
+                 $('#add_contact_form').data('contact-card', contact_card);
+                 $('#add_contact_form').modal();
+               },
 remove_contact: function(trash_el) {
-     contact_card = $(trash_el).closest('.contact-card')
-       if(contact_card.find('[name="client[contacts_attributes][][id]"]').length) {
-       contact_card.append('<input type="hidden" name="client[contacts_attributes][][_destroy]" value="1">');
-       contact_card.addClass('contact-card-destroy')
-         contact_card.find('.icon-edit').parent().hide()
-       contact_card.find('.icon-trash').parent().hide()  
-     } else {
-      contact_card.remove()
-     }
-}
+                  contact_card = $(trash_el).closest('.contact-card')
+                    if(contact_card.find('[name="client[contacts_attributes][][id]"]').length) {
+                      contact_card.append('<input type="hidden" name="client[contacts_attributes][][_destroy]" value="1">');
+                      contact_card.addClass('contact-card-destroy')
+                        contact_card.find('.icon-edit').parent().hide()
+                        contact_card.find('.icon-trash').parent().hide()  
+                    } else {
+                      contact_card.remove()
+                    }
+                }
 }    
 </script>

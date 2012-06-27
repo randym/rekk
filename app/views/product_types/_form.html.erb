@@ -1,0 +1,26 @@
+<%= form_for @product_type, :html => {class: 'form-horizontal'} do |f| %>
+
+  <div class="control-group">
+    <label class="control-label" for="name">
+      <%= t :name, scope: [:activerecord, :models, :product_type] %>
+    </label>
+    <div class="controls">
+      <%= f.text_field(:name, class: "input-xxlarge") %>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label class="control-label" for="expired">
+      <%= t :expired, scope: [:activerecord, :models, :product_type] %>
+    </label>
+    <div class="controls">
+      <%= f.check_box :expired %>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <button type="submit" class="btn"><%=t :save%></button>
+  </div>
+
+<% end %>
+

@@ -1,0 +1,54 @@
+<%= form_for @product, :html => {class: 'form-horizontal'} do |f| %>
+
+  <div class="control-group">
+    <label class="control-label" for="name">
+      <%=t :product_type, scope: [:activerecord, :models, :product]%>
+    </label>
+    <div class="controls">
+      <%= collection_select(:product, :product_type_id, ProductType.all, :id, :name, prompt: true) %>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label class="control-label" for="name">
+      <%= t :name, scope: [:activerecord, :models, :product] %>
+    </label>
+    <div class="controls">
+      <%= f.text_field(:name, class: "input-xxlarge") %>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label class="control-label" for="name">
+      <%= t :price, scope: [:activerecord, :models, :product] %>
+    </label>
+    <div class="controls">
+      <%= f.text_field(:price, class: "input-xxlarge") %>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label class="control-label" for="expired">
+      <%= t :includes_tax, scope: [:activerecord, :models, :product] %>
+    </label>
+    <div class="controls">
+      <%= f.check_box :includes_tax %>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label class="control-label" for="expired">
+      <%= t :expired, scope: [:activerecord, :models, :product] %>
+    </label>
+    <div class="controls">
+      <%= f.check_box :expired %>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <button type="submit" class="btn"><%=t :save%></button>
+  </div>
+
+<% end %>
+
+
