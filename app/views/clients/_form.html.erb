@@ -1,30 +1,41 @@
-  <%= form_for @client, :html => { class: 'form-horizontal' } do |f| %>
-     <div class="control-group">
-      <label class="control-label" for="name">
-        <%=t :user, scope: [:activerecord, :models, :client]%>
-      </label>
-      <div class="controls">
-        <%= collection_select(:client, :user_id, User.all, :id, :name) %>
-      </div>
-    </div>
-    <div class="control-group">
-      <label class="control-label" for="name">
-        <%=t :name, scope: [:activerecord, :models, :client]%>
-      </label>
-      <div class="controls">
-        <%= f.text_field(:name, class: "input-xxlarge") %>
-      </div>
-    </div>
-    <div class="control-group">
-      <label class="control-label" for="local_name">
-        <%=t :local_name, scope: [:activerecord, :models, :client]%>
-      </label>
-      <div class="controls">
-        <%= f.text_field(:local_name, class: "input-xxlarge") %>
-      </div>
-    </div>
 
-    <div class="control-group">
+<%= form_for @client, :html => { class: 'form-horizontal' } do |f| %>
+<% if @client.id %> 
+  <%=link_to(client_path(@client), method: :delete, confirm: I18n.t(:confirm_delete_client), class: 'btn btn-danger pull-right') do%> 
+  <i class="icon-trash icon-white"i></i>
+  <% end %>
+<% end %>
+  <div class="control-group extended-edit">
+    <label class="control-label" for="name">
+      <%=t :user, scope: [:activerecord, :models, :client]%>
+    </label>
+    <div class="controls">
+      <%= collection_select(:client, :user_id, User.all, :id, :name) %>
+    </div>
+  </div>
+  
+  <div class="control-group ">
+    <label class="control-label" for="name">
+            <%=t :name, scope: [:activerecord, :models, :client]%>
+    </label>
+    <div class="controls">
+      <%= f.text_field(:name, class: "input-xxlarge disabled", disabled: :disabled) %>
+  <div style="display: inline-block">
+    <a href="#" class="btn form-edit-link"><i class="icon-edit"></i></a>
+    </div>
+  </div>
+  </div>
+  
+  <div class="control-group extended-edit">
+    <label class="control-label" for="local_name">
+      <%=t :local_name, scope: [:activerecord, :models, :client]%>
+    </label>
+    <div class="controls">
+      <%= f.text_field(:local_name, class: "input-xxlarge") %>
+    </div>
+  </div>
+
+    <div class="control-group extended-edit">
       <label class="control-label" for="contacts">
         <%=t :contacts, scope: [:activerecord, :models, :client]%>
 
@@ -45,7 +56,7 @@
       
     </div>
 
-    <div class="control-group">
+    <div class="control-group extended-edit">
       <label class="control-label" for="accounting_code">
         <%=t :accounting_code, scope: [:activerecord, :models, :client]%>
       </label>
@@ -59,11 +70,11 @@
         <%=t :memo, scope: [:activerecord, :models, :memo]%>
       </label>
       <div class="controls">
-        <%= f.text_area(:memo, class: "input-xxlarge") %>
+        <%= f.text_area(:memo, :rows => 10, class: "input-xxlarge disabled", disabled: :disabled) %>
       </div>
     </div>
 
-    <div class="form-actions">
+    <div class="form-actions extended-edit">
       <button type="submit" class="btn"><%=t :save%></button>
     </div>
 
@@ -75,13 +86,19 @@
   $(document).ready(function() {
       $('.icon-edit.contact').live('click', function() { client.edit_contact(this) }) 
       $('.icon-trash.contact').live('click', function() {client.remove_contact(this) })
-
+      $('.form-edit-link').live('click', function() { client.edit(this) })
       $('#add_contact').click(function() {
         $('#add_contact_form').removeData('contact-card')
         $('#add_contact_form').modal()
         });
       });
 var client = {
+edit: function(link) {
+        var form = $(link).closest('form')
+        form.find(':disabled').removeAttr('disabled')
+        form.find('.extended-edit').show()
+        $(link).hide()
+      },
 update_contact_inputs: function(contact, data) {
                          var contact_prefix = 'client[contacts_attributes][][';
                          for(var x in data) {

@@ -55,10 +55,7 @@
         </div>
       </div>
     </div>
-       <% flash.each do |name, msg| %>
-        <%= content_tag(:div, msg, :id => "flash_#{name}") %>
-      <% end %>
-    <div class="container-fluid">
+   <div class="container-fluid">
       <div class="row-fluid">
         <%= yield %>
       </div>

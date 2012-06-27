@@ -20,9 +20,11 @@ en:
   create_product_type: Make a new Product Type
   all_items: Show all items
   hide_expired_items: Hide expired items
+  
   only_my_items: Only show my stuff
   add_contact: Add a contact
-  activerecord:
+  confirm_delete_client: This will delete this client permenantly, removing all associated work orders, invoices and sales records. Are you ABSOLUTELY SURE you want to delete this?  
+activerecord:
     models:
       client:
         name: Client Name

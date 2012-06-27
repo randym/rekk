@@ -7,8 +7,8 @@
   <div class="well sidebar-nav">
     <input class="input-medium search-query search" type="text" placeholder="<%= I18n.t(:search)%>"/>
     <label class="checkbox">
-      <% if params[:only_my_items] == "1" %>
-        <%= link_to I18n.t(:all_items), clients_path %>
+      <% if params[:alternate] == "1" %>
+        <%= link_to I18n.t(:all_items), request.path %>
       <% else %>
         <%= link_to alternate_label, alternate_path %>
       <% end %> 

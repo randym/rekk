@@ -4,5 +4,8 @@ class ProductType < ActiveRecord::Base
 
   # attribute whitelist
   attr_accessible :name, :expired
-  
+
+  def self.active
+    self.where(expired: false)
+  end  
 end
