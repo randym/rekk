@@ -19,7 +19,7 @@ class ProductsController < ApplicationController
 
   def create
     product = Product.new(params[:product])
-    redirect_to products_path if product.save
+    redirect_to and return products_path if product.save
     flash[:error] = product.errors.map { |k, v| "#{k}: #{v}" }
     redirect_to new_product_path(product) 
   end
@@ -27,12 +27,17 @@ class ProductsController < ApplicationController
   def update
     product = Product.find(params[:id])
     product.update_attributes!(params[:product])
-    redirect_to edit_product_path(product)
+    redirect_to product_path(product)
   end 
 
 
   private
   def products_list
-    @products = params[:alternate] ? Product.active : Product.all
+    if params[:alternate] || cookies[:alternate]
+      cookies[:alternate] = { value: 1, expires: Time.now+3600 }
+      @products = Product.active
+    else
+      @products = Product.all
+    end
   end
 end

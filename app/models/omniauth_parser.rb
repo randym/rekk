@@ -1,23 +1,23 @@
 class OmniauthParser
 
   def initialize(omniauth)
-    @omniauth = omniauth
+    @omniauth = omniauth.to_hash
   end
   
-  def post_args
-    @post_args ||= @omniauth['extra'].response.message.to_post_args
+  def info
+    @info ||= @omniauth["info"]
   end
-  
+
   def email
-    @email ||= post_args['openid.ext1.value.ext0']
+    @email ||= info["email"]
   end
 
   def name
-    @name ||= [ post_args['openid.ext1.value.ext2'], post_args['openid.ext1.value.ext3'] ].join(' ')
+    @name ||= info["name"] 
   end
 
   def identity
-    @identity ||= post_args['openid.identity']
+    @identity ||= @omniauth["uid"]
   end
 
   def user_hash

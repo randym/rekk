@@ -7,16 +7,18 @@ class Client < ActiveRecord::Base
   attr_accessible :name, 
                   :local_name, 
                   :accounting_code, 
-                  :user, 
                   :contacts_attributes,
                   :memo,
                   :user_id
-  
+
   accepts_nested_attributes_for :contacts, 
     allow_destroy: true, 
     reject_if: proc  { |attributes| 
       attributes[:name].blank? || attributes[:email].blank?
     }
+
+  validates_presence_of :user, :name
+  validates_uniqueness_of :name
 
   def self.by_user(user)
     where(user_id:  user.id)

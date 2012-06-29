@@ -2,6 +2,9 @@ source 'https://rubygems.org'
 
 gem 'rails', '3.2.2'
 gem 'jquery-rails'
+gem 'pg'
+gem 'omniauth-google-apps'
+gem 'thin'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
@@ -10,16 +13,20 @@ group :assets do
 end
 
 group :test, :development do
-  gem 'pg'
+  gem 'shoulda-matchers', :require => false
   gem 'omniauth-google-apps'
+  gem 'faker'
   gem 'foreman'
-  gem 'thin'
   gem 'heroku'
   gem "rspec-rails"
+  gem 'factory_girl_rails'
+end
+
+group :test do
+  gem 'capybara'
+  gem 'guard-rspec'
+  gem 'launchy'
 end
 
 group :production do
-  gem 'pg'
-  gem 'omniauth-google-apps'
-  gem 'thin'
 end

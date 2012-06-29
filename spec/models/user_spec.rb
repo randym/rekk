@@ -1,51 +1,83 @@
 require 'spec_helper'
 
 describe User do
-  describe 'authentication' do 
+  context 'factory' do
+    subject { FactoryGirl.build(:user) }
+    it { should be_valid }
+  end
+
+  context 'validations' do
+    it { should validate_presence_of(:name) }
+    it { should validate_presence_of(:email) }
+    it { should validate_presence_of(:identity) }
+    it { FactoryGirl.create(:user)
+         should validate_uniqueness_of(:email) }
+  end
+
+  context 'mass assignement' do
+    it { should allow_mass_assignment_of(:name) }
+    it { should allow_mass_assignment_of(:email) }
+    it { should allow_mass_assignment_of(:identity) }
+  end 
+  describe 'classmethods' do
     before(:each) do
-      OmniauthParser.any_instance.stub(:email).and_return('test@example.com')
-      OmniauthParser.any_instance.stub(:name).and_return('Test User')
-      OmniauthParser.any_instance.stub(:identity).and_return('the secret identity')
+      @omniauth_hash = {"provider"=>"google_apps",
+                        "uid"=>"http://reallyenglish.com/openid?id=100232893175934414282",
+                        "info"=>{"email"=>"randym@reallyenglish.com",
+                                 "first_name"=>"Randy",
+                                 "last_name"=>"Morgan",
+                                 "name"=>"Randy Morgan"},
+                                 "credentials"=>{},
+                                 "extra"=>{}}
     end
 
-    context 'with an unknown user' do
-      before(:each) do 
-        @user = User.authenticate('') 
-      end
+    describe 'authenticate' do
+      context 'with an unknown user' do
+        before(:each) do 
+          @user = User.authenticate(@omniauth_hash) 
+        end
 
-      it 'creates a new user' do
-        User.all().should have(1).item
-      end
-      
-      it 'sets the email' do
-        @user.email.should == 'test@example.com'
-      end
-      
-      it 'sets the name' do
-        @user.name.should == 'Test User'
-      end
+        it 'creates a new user' do
+          User.all().should have(1).item
+        end
 
-      it 'sets the identity' do 
-        @user.identity.should == 'the secret identity'
-      end
-    end 
+        it 'sets the email' do
+          @user.email.should == @omniauth_hash["info"]["email"]
+        end
 
-    context 'with a known user' do
-      before do
-        user = User.new(:email => 'test@example.com', :name => 'Old Name', :identity => 'the old secret identity')
-        user.save
-        @user = User.authenticate('')
-      end
-      it 'loads an existing user' do
-        User.all().should have(1).item
-      end
+        it 'sets the name' do
+          @user.name.should == @omniauth_hash["info"]["name"]
+        end
 
-      it 'updates the name' do
-        @user.name.should == 'Test User'
-      end
+        it 'sets the identity' do 
+          @user.identity.should == @omniauth_hash["uid"]
+        end
+      end 
 
-      it 'updates the identity' do 
-        @user.identity.should == 'the secret identity'
+      context 'with a known user' do
+        before do
+          FactoryGirl.create(:user, :email => @omniauth_hash["info"]["email"], 
+                             :name => @omniauth_hash["info"]["name"],
+                             :identity => @omniauth_hash["uid"])
+          @omniauth_hash['info']['name'] = "fundantastic"
+          @omniauth_hash['uid'] = 'wasssat?'
+
+          @user = User.authenticate(@omniauth_hash)
+        end
+
+        it 'loads an existing user' do
+          User.all().should have(1).item
+        end
+
+        it 'updates the name' do
+          @omniauth_hash['info']['name'].should == 'fundantastic'
+          @user.name.should == @omniauth_hash['info']['name']
+        end
+
+        it 'updates the identity' do 
+          @omniauth_hash['uid'].should == 'wasssat?'
+          @user.identity.should == @omniauth_hash['uid']
+        end
       end
     end
   end
