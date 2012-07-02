@@ -1,13 +1,13 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  before_filter :require_authentication
+  before_filter :require_authentication, except: [:login]
  
   def require_authentication
     if current_user
       return true
     else
       session[:return_to] = request.original_fullpath
-      redirect_to '/auth/google_apps' # controller: :sessions, :action => :login
+      redirect_to :login
       return false
     end
   end

@@ -3,10 +3,6 @@ class ProductsController < ApplicationController
   before_filter :products_list, only: [:new, :show, :index]
 
   def index
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @products }
-    end
   end
 
   def show
@@ -33,11 +29,12 @@ class ProductsController < ApplicationController
 
   private
   def products_list
-    if params[:alternate] || cookies[:alternate]
-      cookies[:alternate] = { value: 1, expires: Time.now+3600 }
-      @products = Product.active
-    else
+    if params[:alternate]
+
       @products = Product.all
+    else
+
+      @products = Product.active
     end
   end
 end

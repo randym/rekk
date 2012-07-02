@@ -1,7 +1,8 @@
     <%= render 'layouts/search_list',  items: @product_types, 
       list_label: t(:product_types),
       item_label: Proc.new { |item| item.name },
-      alternate_label: I18n.t(:hide_expired_items),
+      default_label: I18n.t(:hide_expired_items),
+      alternate_label: I18n.t(:all_items),
       alternate_path: product_types_path(alternate: 1)  %>
     <%= render 'layouts/index', title: I18n.t(:product_types), 
       intro: I18n.t(:product_types_introduction),

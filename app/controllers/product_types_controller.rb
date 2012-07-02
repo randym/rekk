@@ -32,6 +32,6 @@ class ProductTypesController < ApplicationController
   private
 
   def product_types_list
-    @product_types = params[:alternate] ?  ProductType.active : ProductType.all
+    @product_types = params[:alternate] ? ProductType.all : ProductType.active 
   end
 end

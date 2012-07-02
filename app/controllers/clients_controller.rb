@@ -20,7 +20,7 @@ class ClientsController < ApplicationController
   end
  
   def new
-   @client = Client.new(:user => current_user)
+   @client = Client.new(:user_id => current_user.id)
   end
 
   def update
@@ -38,7 +38,7 @@ class ClientsController < ApplicationController
 
   private
   def clients_list
-    @clients = params[:alternate] ? Client.by_user(current_user) : Client.all
+    @clients = params[:alternate] ? Client.all : Client.by_user(current_user) 
   end
 
 

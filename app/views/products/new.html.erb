@@ -1,7 +1,8 @@
 <%= render 'layouts/search_list',  items: @products, 
   list_label: t(:products),
   item_label: Proc.new { |item| item.name },
-  alternate_label: I18n.t(:hide_expired_items),
+  default_label: I18n.t(:hide_expired_items),
+  alternate_label: I18n.t(:all_items),
   alternate_path: new_product_path(@product, alternate: 1) %>
 
 <div class="span9">

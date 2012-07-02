@@ -2,13 +2,14 @@ Rekk::Application.routes.draw do
 
   root :to => 'home#index'
 
+  resources :home, only: [:index]
+  get '/login', to: 'home#login', as: :login
   resources :users, only: [:index, :show, :destroy]
   resources :clients
   resources :products, :product_types, except: [:destroy, :edit]
   resources :roles
   resources :contacts, only: [:index, :show]
   get   '/logout', to: 'sessions#logout'
-  get   '/login', to: 'sessions#new', as: :login
   match '/auth/:provider/callback', to: 'sessions#create'
   match '/auth/failure', to: 'sessions#failure' 
 
