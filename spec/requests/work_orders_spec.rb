@@ -9,7 +9,7 @@ describe "WorkOrders" do
     it "works! (now write some real specs)" do
       login_with_oauth
       visit '/work_orders'
-      response.status.should be(200)
+      current_path.should == '/work_orders'
     end
   end
 end
