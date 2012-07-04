@@ -1,0 +1,40 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Author:</b>
+  <%= @work_order.author_id %>
+</p>
+
+<p>
+  <b>Owner:</b>
+  <%= @work_order.owner_id %>
+</p>
+
+<p>
+  <b>Client:</b>
+  <%= @work_order.client_id %>
+</p>
+
+<p>
+  <b>Payment type:</b>
+  <%= @work_order.payment_type_id %>
+</p>
+
+<p>
+  <b>Memo:</b>
+  <%= @work_order.memo %>
+</p>
+
+<p>
+  <b>Created at:</b>
+  <%= @work_order.created_at %>
+</p>
+
+<p>
+  <b>:</b>
+  <%= @work_order. %>
+</p>
+
+
+<%= link_to 'Edit', edit_work_order_path(@work_order) %> |
+<%= link_to 'Back', work_orders_path %>

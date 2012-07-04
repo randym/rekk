@@ -25,6 +25,7 @@
             <span class="icon-bar"></span>
           </a>
           <% if @current_user %>
+          <div style="" class="pull-right">
           <div class="btn-group pull-right">
             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
               <i class="icon-user"></i><%= @current_user.name %>
@@ -58,7 +59,7 @@
 
             </ul>
           </div>
-
+        </div>
         <% end %>
           <!--/.nav-collapse -->
         </div>

@@ -1,0 +1,45 @@
+<%= form_for(@work_order) do |f| %>
+  <% if @work_order.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@work_order.errors.count, "error") %> prohibited this work_order from being saved:</h2>
+
+      <ul>
+      <% @work_order.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :author_id %><br />
+    <%= f.text_field :author_id %>
+  </div>
+  <div class="field">
+    <%= f.label :owner_id %><br />
+    <%= f.text_field :owner_id %>
+  </div>
+  <div class="field">
+    <%= f.label :client_id %><br />
+    <%= f.text_field :client_id %>
+  </div>
+  <div class="field">
+    <%= f.label :payment_type_id %><br />
+    <%= f.text_field :payment_type_id %>
+  </div>
+  <div class="field">
+    <%= f.label :memo %><br />
+    <%= f.text_field :memo %>
+  </div>
+  <div class="field">
+    <%= f.label :created_at %><br />
+    <%= f.text_field :created_at %>
+  </div>
+  <div class="field">
+    <%= f.label : %><br />
+    <%= f.text_field : %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

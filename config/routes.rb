@@ -1,5 +1,7 @@
 Rekk::Application.routes.draw do
 
+  resources :work_orders
+
   root :to => 'home#index'
 
   resources :home, only: [:index]

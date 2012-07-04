@@ -5,7 +5,6 @@ class SessionsController < ApplicationController
   def create
     user = User.authenticate(request.env['omniauth.auth'])
     session[:user_id] = user.id
-    puts session[:return_to]
     redirect_to session[:return_to] || '/'
   end
   
