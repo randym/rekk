@@ -2,8 +2,8 @@
 
 FactoryGirl.define do
   factory :work_order do
-    association :author, factory: :user, email: Faker::Internet.email
-    association :owner, factory: :user, email: Faker::Internet.email
+    association :author, factory: :user
+    association :owner, factory: :user
     association :client
     association :payment_type
   end

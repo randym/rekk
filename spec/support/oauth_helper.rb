@@ -1,3 +1,5 @@
+OmniAuth.config.test_mode = true
+
 module OauthHelper
   def user
     @user
