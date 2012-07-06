@@ -42,6 +42,7 @@ RSpec.configure do |config|
 
   config.before(:suite) do
     DatabaseCleaner.strategy = :deletion
+    DatabaseCleaner.clean
   end
 
   config.before(:each) do

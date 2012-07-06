@@ -23,7 +23,7 @@ describe WorkOrdersController do
   # WorkOrder. As you add validations to WorkOrder, be sure to
   # update the return value of this method accordingly.
   def valid_attributes
-    {}
+    {client_id: 1, owner_id: 1, author_id: 1, payment_type_id:1}
   end
   
   # This should return the minimal set of values that should be in the session

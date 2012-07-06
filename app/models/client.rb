@@ -1,7 +1,9 @@
 class Client < ActiveRecord::Base
   #relations
-  has_many :contacts, inverse_of: :client
+  has_many :contacts, inverse_of: :client, dependent: :destroy
+  has_many :work_orders, inverse_of: :client
   belongs_to :user, inverse_of: :clients
+
   #
   # attribute whitelist
   attr_accessible :name, 
