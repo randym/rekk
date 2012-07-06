@@ -5,7 +5,7 @@ class WorkOrdersController < ApplicationController
   # GET /work_orders.json
   def index
     @work_orders = WorkOrder.all
-
+    @clients = Client.all
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @work_orders }

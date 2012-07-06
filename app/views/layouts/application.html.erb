@@ -38,6 +38,10 @@
           </div>
           <div class="nav-collapse">
             <ul class="nav">
+              <li <% if controller.is_a?(WorkOrdersController) %> class="active"<% end %>>
+              <%= link_to I18n.t(:work_orders), work_orders_path %>
+              </li >
+
              <li <% if controller.is_a?(ClientsController) %> class="active"<% end %>>
               <%= link_to I18n.t(:clients), clients_path %>
              </li >
