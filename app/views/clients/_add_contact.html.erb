@@ -57,7 +57,7 @@
     </form>
     <hr>
     <div class="modal-footer">
-      <button id="btn_save" class="btn btn-primary"><%=t :save%></button>
+      <button id="btn_save_contact" class="btn btn-primary"><%=t :save%></button>
       <button id="btn_cancel" class="btn"><%=t :cancel%></button>
     </div>
   </div>
@@ -67,7 +67,7 @@
       $('#btn_cancel').click(function() {
         $('#add_contact_form').modal('hide');
         })
-      $('#btn_save').click(function() {
+      $('#btn_save_contact').click(function() {
         $('.error').each(function(index, item) { 
           $(item).removeClass('error')
           $(item).find('.help-inline').text('') 

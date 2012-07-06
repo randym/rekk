@@ -15,15 +15,19 @@ end
 group :test, :development do
   gem 'shoulda-matchers', :require => false
   gem 'omniauth-google-apps'
-  gem 'faker'
   gem 'foreman'
   gem 'heroku'
-  gem "rspec-rails"
+  gem 'rspec-rails'
+  gem 'ruby-debug19'
+  gem 'autotest-rails'
   gem 'factory_girl_rails'
+  gem 'faker'
 end
 
 group :test do
   gem 'capybara'
+  gem 'poltergeist'
+  gem 'database_cleaner'
   gem 'guard-rspec'
   gem 'launchy'
 end

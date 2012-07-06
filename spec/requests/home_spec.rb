@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'Home' do
   describe "Get /login" do
-
+    
     context 'with an unknown user' do
       it 'should redirect to login when the user is not logged in' do
         visit '/'
@@ -28,7 +28,6 @@ describe 'Home' do
     it 'should show the user name in the page' do
       login_with_oauth
       visit '/'
-
       page.should have_content(user.name)
     end
   end

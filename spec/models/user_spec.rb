@@ -33,7 +33,7 @@ describe User do
 
     describe 'authenticate' do
       context 'with an unknown user' do
-        before(:each) do 
+        before do 
           @user = User.authenticate(@omniauth_hash) 
         end
 

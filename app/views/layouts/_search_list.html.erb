@@ -10,7 +10,7 @@
       <% if params[:alternate] == "1" %>
         <%= link_to default_label, request.path %>
       <% else %>
-        <%= link_to alternate_label, alternate_path %>
+        <%= link_to alternate_label, alternate_path, id: 'alternate' %>
       <% end %> 
     </label>
     <hr>

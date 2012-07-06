@@ -18,7 +18,7 @@
   </div>
 
   <div class="control-group ">
-    <label class="control-label" for="name">
+    <label class="control-label" for="client_name">
       <%=t :name, scope: [:activerecord, :models, :client]%>
     </label>
     <div class="controls">
@@ -30,7 +30,7 @@
   </div>
 
   <div class="control-group extended-edit">
-    <label class="control-label" for="local_name">
+    <label class="control-label" for="client_local_name">
       <%=t :local_name, scope: [:activerecord, :models, :client]%>
     </label>
     <div class="controls">
@@ -69,7 +69,7 @@
   </div>
 
   <div class="form-actions extended-edit">
-    <button type="submit" class="btn"><%=t :save%></button>
+    <button type="submit" id="save_client" class="btn"><%=t :save%></button>
   </div>
 
 <% end %>
