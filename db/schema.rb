@@ -11,7 +11,20 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120706064336) do
+ActiveRecord::Schema.define(:version => 20120710043645) do
+
+  create_table "billing_addresses", :force => true do |t|
+    t.integer  "client_id",       :null => false
+    t.string   "postal_code",     :null => false
+    t.string   "address_1",       :null => false
+    t.string   "address_2"
+    t.string   "address_3"
+    t.string   "company_name"
+    t.string   "recipient_name"
+    t.string   "recipient_title"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
 
   create_table "clients", :force => true do |t|
     t.string   "name"
@@ -102,8 +115,14 @@ ActiveRecord::Schema.define(:version => 20120706064336) do
     t.integer  "client_id"
     t.integer  "payment_type_id"
     t.text     "memo"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+    t.date     "payment_deadline"
+    t.integer  "closing_year"
+    t.integer  "closing_month"
+    t.text     "bill_to"
+    t.date     "paid_on"
+    t.integer  "billing_address_id"
   end
 
 end

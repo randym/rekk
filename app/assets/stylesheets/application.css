@@ -11,7 +11,8 @@
  *= require_self
  *= require bootstrap/bootstrap.css.scss.erb
  *= require bootstrap/bootstrap-responsive.css
- 
+ *= require bootstrap/datepicker.css 
  *= require layout.css
  *= require contacts.css
+ *= require billing_addresses.css
  */

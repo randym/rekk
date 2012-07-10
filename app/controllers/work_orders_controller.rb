@@ -27,7 +27,7 @@ class WorkOrdersController < ApplicationController
   # GET /work_orders/new.json
   def new
     @work_order = WorkOrder.new
-
+    @work_order.author = current_user
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @work_order }

@@ -1,0 +1,30 @@
+<% hidden = false unless hidden %>
+<div class="billing_address-card<% if hidden %>-template<%end%>">
+  <% if billing_address.id %>
+    <input type=hidden name="client[billing_addresses_attributes][][id]" value="<%=billing_address.id%>">
+  <% end %>
+  <input type=hidden name="client[billing_addresses_attributes][][postal_code]" value="<%=billing_address.postal_code%>">
+  <input type=hidden name="client[billing_addresses_attributes][][address_1]" value="<%=billing_address.address_1%>">
+  <input type=hidden name="client[billing_addresses_attributes][][address_2]" value="<%=billing_address.address_2%>">
+  <input type=hidden name="client[billing_addresses_attributes][][address_3]" value="<%=billing_address.address_3%>">
+  <input type=hidden name="client[billing_addresses_attributes][][company_name]" value="<%=billing_address.company_name%>">
+  <input type=hidden name="client[billing_addresses_attributes][][recipient_name]" value="<%=billing_address.recipient_name%>">
+  <input type=hidden name="client[billing_addresses_attributes][][recipient_title]" value="<%=billing_address.recipient_title%>">
+  
+    <span name='postal_code'><%= billing_address.postal_code %></span>
+  <a class="btn pull-right edit-contact">
+    <i class="icon-edit"></i>
+  </a>
+  <br/>
+    <span name='address_1'><%= billing_address.address_1 %></span>
+  <br/>
+  <a class="btn btn-danger pull-right remove-contact">
+    <i class="icon-trash icon-white"></i>
+  </a>
+    <div name='address_2'><%= billing_address.address_2 %></div>
+    <div name='address_3'><%= billing_address.address_3 %></div>
+    <div name='company_name'><%= billing_address.company_name %></div>
+    <div name='recipient_name'><%= billing_address.recipient_name %></div>
+    <div name='recipient_title'><%= billing_address.recipient_title %></div>
+
+</div>

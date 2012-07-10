@@ -19,8 +19,13 @@ describe Client do
     it { should allow_mass_assignment_of(:contacts_attributes) }
     it { should allow_mass_assignment_of(:memo) }
     it { should allow_mass_assignment_of(:user_id) }
+    it { should allow_mass_assignment_of(:billing_addresses_attributes) }
   end
 
+  context 'nested_attributes' do
+    it { should accept_nested_attributes_for(:billing_addresses) }
+    it { should accept_nested_attributes_for(:contacts) }
+  end
   context 'classmethods' do
     context "by_user" do
       it "returns specific user's clients" do

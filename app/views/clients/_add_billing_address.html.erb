@@ -1,0 +1,120 @@
+<div id="add_billing_address_form" class="modal hide fade" style="display:none;">
+  <div class="modal-header"><%=t :add_billing_address%> </div>
+  <div class="modal-body">
+    <form class="form-horizontal">
+      <fieldset>
+        <div class="control-group">
+          <label class="control-label">
+            <%=t :postal_code, scope: [:activerecord, :models, :billing_address] %>
+          </label>
+          <div class="controls">
+            <%= text_field_tag(:postal_code, '', class: "input-medium") %>
+            <span class="help-inline"></span>
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label">
+            <%=t :address_1, scope: [:activerecord, :models, :billing_address] %>
+          </label>
+          <div class="controls">
+            <%= text_field_tag(:address_1, '', class: "input-xlarge") %>
+            <span class="help-inline"></span>
+          </div>
+          
+        </div>
+
+<div class="control-group">
+          <label class="control-label">
+            <%=t :address_2, scope: [:activerecord, :models, :billing_address] %>
+          </label>
+          <div class="controls">
+            <%= text_field_tag(:address_2, '', class: "input-xlarge") %>
+            <span class="help-inline"></span>
+          </div>
+          
+        </div>
+<div class="control-group">
+          <label class="control-label">
+            <%=t :address_3, scope: [:activerecord, :models, :billing_address] %>
+          </label>
+          <div class="controls">
+            <%= text_field_tag(:address_3, '', class: "input-xlarge") %>
+            <span class="help-inline"></span>
+          </div>
+          
+        </div>
+
+
+        <div class="control-group">
+          <label class="control-label">
+            <%=t :company_name, scope: [:activerecord, :models, :billing_address] %>
+          </label>
+          <div class="controls">
+            <%= email_field_tag(:company_name, '', class: "input-xlarge") %>
+            <span class="help-inline"></span>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label">
+            <%=t :recipient_name, scope: [:activerecord, :models, :billing_address] %>
+          </label>
+          <div class="controls">
+            <%= text_field_tag(:recipient_name, '', class: "input-xlarge") %>
+            <span class="help-inline"></span>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label">
+            <%=t :recipient_title, scope: [:activerecord, :models, :billing_address] %>
+          </label>
+          <div class="controls">
+            <%= text_field_tag(:recipient_title, '', class: "input-xlarge") %>
+            <span class="help-inline"></span>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+    <hr>
+    <div class="modal-footer">
+      <button id="btn_save_billing_address" class="btn btn-primary"><%=t :save%></button>
+      <button id="btn_cancel" class="btn"><%=t :cancel%></button>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $(document).ready(function() {
+      $('#btn_cancel').click(function() {
+        $('#add_billing_address_form').modal('hide');
+        })
+      $('#btn_save_billing_address').click(function() {
+        $('.error').each(function(index, item) { 
+          $(item).removeClass('error')
+          $(item).find('.help-inline').text('') 
+          })
+
+        var data = $('#add_billing_address_form')
+        var billing_address_info = {}
+        data.find('input').each(function(index, item) {
+          billing_address_info[item.name] = item.value
+          });
+        for(var x in billing_address_info) {
+        if(billing_address_info[x] == '') { 
+        var selector = ['#',x].join('');
+        data.find(selector).closest('.control-group').addClass('error')
+        data.find(selector).next().text('<%=t :required%>')
+        }
+        }
+        if($('.error').size() > 0) { return }
+
+        client.add_billing_address(billing_address_info);
+        data.find('input').each(function(index, item) {
+            item.value = ""
+            });
+
+        $('#add_billing_address_form').modal('hide');
+      })
+  })
+</script>
+

@@ -5,7 +5,9 @@ class WorkOrder < ActiveRecord::Base
   belongs_to :payment_type
   has_many :work_order_products, dependent: :delete_all, inverse_of: :work_order
 
-  attr_accessible :author_id, :owner_id, :client_id, :payment_type_id, :memo, :work_order_products_attributes
+  attr_accessible :author_id, :owner_id, :client_id, :payment_type_id, 
+                  :memo, :work_order_products_attributes, :payment_deadline,
+                  :closing_year, :closing_month, :bill_to, :paid_on, :billing_address_id
 
   accepts_nested_attributes_for :work_order_products, allow_destroy: true
 
@@ -13,6 +15,11 @@ class WorkOrder < ActiveRecord::Base
 
   def self.by_author(user)
     where(author_id: user.id)
+  end
+
+  def self.allowed_closing_years
+    (2006..(Time.zone.now.year+1)).to_a
+    
   end
 
   def self.by_owner(user)

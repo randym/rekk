@@ -1,10 +1,10 @@
-.contact-card {
+.billing_address-card {
   padding:2px;
   margin-left:10px;
   margin-bottom: 10px;
   margin-top:0px;
   width: 320px;
-  height: 175px;
+  height: 130px;
   font-size: 0.9em;
 display:inline-block;
 background-color: 
@@ -25,9 +25,10 @@ rgba(0, 0, 0, 0.3);
 -moz-background-clip: padding-box;
 background-clip: padding-box;
 }
-.contact-card-template {
+.billing_address-card-template {
  display: none;
 }
-.contact-card-destroy {
+.billing_address-card-destroy {
   background-color: #999;
 }
+

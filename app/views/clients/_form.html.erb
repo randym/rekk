@@ -49,6 +49,17 @@
       </div>
     </div>
   </div>
+  <div class="control-group extended-edit">
+    <label class="control-label" for="billing_addresses">
+      <%=t :billing_addresses, scope: [:activerecord, :models, :client]%>
+      <span class="btn" id="add_billing_address"><i class="icon-plus"></i></span>
+    </label>
+    <div class="controls">
+      <div id="billing_addresses">
+        <%= render @client.billing_addresses %>
+      </div>
+    </div>
+  </div>
 
   <div class="control-group extended-edit">
     <label class="control-label" for="accounting_code">
@@ -75,64 +86,111 @@
 <% end %>
   <%= render 'add_contact' %>
   <%= render 'contacts/contact', contact: Contact.new, hidden: true %>
+  <%= render 'add_billing_address' %>
+  <%= render 'billing_addresses/billing_address', billing_address: BillingAddress.new, hidden: true %>
   <script type="text/javascript">
     $(document).ready(function() {
         $('.btn.edit-contact').live('click', function() { client.edit_contact(this) }) 
         $('.btn.remove-contact').live('click', function() {client.remove_contact(this) })
+        $('.btn.edit-billing-address').live('click', function() { client.edit_billing_address(this) }) 
+        $('.btn.remove-billing-address').live('click', function() {client.remove_billing_address(this) })
+
+
         $('.form-edit-link').live('click', function() { client.edit(this) })
         $('#add_contact').click(function() {
-          $('#add_contact_form').removeData('contact-card')
+          $('#add_contact_form').removeData('contact')
           $('#add_contact_form').modal()
           });
+        $('#add_billing_address').click(function() {
+          $('#add_billing_address_form').removeData('billing_address');
+          $('#add_billing_address_form').modal();
+          });
         });
+
 var client = {
 edit: function(link) {
-        var form = $(link).closest('form')
-          form.find(':disabled').removeAttr('disabled')
-          form.find('.extended-edit').show()
-          $(link).hide()
+        var form = $(link).closest('form');
+        form.find(':disabled').removeAttr('disabled');
+        form.find('.extended-edit').show();
+        $(link).hide();
       },
-update_contact_inputs: function(contact, data) {
-                         var contact_prefix = 'client[contacts_attributes][][';
-                         for(var x in data) {
-                           var input_selector = ["[name='",contact_prefix,x,"]']"].join('')
-                             var label_selector = ["[name='",x,"']"].join('')
-                             contact.find(input_selector).val(data[x])
-                             contact.find(label_selector).text(data[x])
-                         }
-                       },
 add_contact : function(contact_info) {
-                var contact_card = $('#add_contact_form').data('contact-card')
-
-                  if(contact_card == undefined) {
-                    contact_card = $('.contact-card-template').clone();
-                    contact_card.removeClass('contact-card-template')
-                      contact_card.addClass('contact-card')
-                      contact_card.appendTo($('#contacts'))
-                  }
-                contact_card.find('[name="client-name"]').text($('#client_name').val())
-                  contact_card.find('[name="client-local_name"]').text($('#client_local_name').val())  
-                  this.update_contact_inputs(contact_card, contact_info)
+                contact = this._add_association('contact', 'contacts', contact_info);
+                contact.find('[name="client-name"]').text($('#client_name').val());
+                contact.find('[name="client-local_name"]').text($('#client_local_name').val());
               },
+
+
+add_billing_address : function(billing_address_info) {
+                        billing_address = this._add_association('billing_address', 'billing_addresses', billing_address_info);
+                      },
+
 edit_contact : function(edit_el) {
-                 contact_card = $(edit_el).closest('.contact-card')
-                   inputs = $('#add_contact_form input')
-                   $.map(inputs, function(input, index) {
-                       input.value = contact_card.find('[name="' + input.id + '"]').text()
-                       })
-                 $('#add_contact_form').data('contact-card', contact_card);
-                 $('#add_contact_form').modal();
+                 this._edit_association($(edit_el), 'contact');
                },
+edit_billing_address : function(edit_el) {
+                         this._edit_association($(edit_el), 'billing_address');
+                       },
+
 remove_contact: function(trash_el) {
-                  contact_card = $(trash_el).closest('.contact-card')
-                    if(contact_card.find('[name="client[contacts_attributes][][id]"]').length) {
-                      contact_card.append('<input type="hidden" name="client[contacts_attributes][][_destroy]" value="1">');
-                      contact_card.addClass('contact-card-destroy')
-                        contact_card.find('.icon-edit').parent().hide()
-                        contact_card.find('.icon-trash').parent().hide()  
-                    } else {
-                      contact_card.remove()
+                  this._remove_association($(trash_el), 'contact', 'contacts');
+                },
+remove_billing_address: function(trash_el) {
+                          this._remove_association($(trash_el), 'billing_address', 'billing_addresses');
+                        },
+_update_association: function(object, data, association, attributes_name) {
+                       var prefix = ['client[',attributes_name,'_attributes][]['].join('');
+                       for(var x in data) {
+                         var input_el = ["[name='",prefix,x,"]']"].join('');
+                         var label_el = ["[name='",x,"']"].join('');
+                         object.find(input_el).val(data[x]);
+                         object.find(label_el).text(data[x]);
+                       }
+                     },
+
+_add_association: function(association, target, association_info) {
+                    var form_selector = ['#add_',association,'_form'].join('');
+                    var card_style = [association, '-card'].join('');
+                    var target_selector = ['#',target].join('');
+                    var template_selector = ['.',association, '-card-template'].join('');
+                    var data = $(form_selector).data(association);
+
+                    if(typeof data == 'undefined') {
+                      data = $(template_selector).clone();
+                      data.removeClass(template_selector);
+                      data.addClass(card_style);
+                      data.appendTo($(target_selector));
                     }
-                }
-}    
+                    this._update_association(data, association_info, association, target);
+                    return data;
+                  },
+
+_edit_association: function(source, association) {
+                     var card_selector = ['.',association,'-card'].join('');
+                     var form_selector = ['#add_',association,'_form'].join('');
+                     var card = source.closest(card_selector);
+                     var inputs = $(form_selector + ' index');
+                     $.map(inputs, function(input, index) {
+                         input.value = card.find("[name='" + input.id + '"]').text();
+                         });
+                     $(form_selector).data(association, card);
+                     $(form_selector).modal();
+                   },
+_remove_association: function(source, association, attributes_name) {
+                       var card_selector = ['.',association,'-card'].join('');
+                       var association_id_selector = ['[name="',attributes_name,'_attributes[][id]"]'].join('');
+                       var destroy_input = ['<input type="hidden" name="',attributes_name,'_attributes][][_destroy]" value="1">'].join('');
+                       var destroy_style = [association,'-card-destroy'].join('');
+
+                       card = $(source).closest(card_selector);
+                       if(card.find(association_id_selector).length) {
+                         card.append(destroy_input);
+                         card.find('icon-edit').parent().hide();
+                         card.find('icon-trash').parent().hide();
+                       } else {
+                         card.remove();
+                       }
+                     }
+}
+
 </script>

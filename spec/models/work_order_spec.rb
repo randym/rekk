@@ -6,6 +6,7 @@ describe WorkOrder do
     it { should be_valid }
 
   end
+
   context 'validations' do
     it { should validate_presence_of(:client_id) }
     it { should validate_presence_of(:owner_id) }
@@ -14,9 +15,15 @@ describe WorkOrder do
   end
 
   context 'mass_assignemnt' do
-    [:author_id, :owner_id, :client_id, :payment_type_id, :memo].each do |attribute|
+    [:author_id, :owner_id, :client_id, :payment_type_id, 
+     :memo, :work_order_products_attributes, :payment_deadline, 
+     :closing_year, :closing_month, :bill_to, :paid_on, :billing_address_id].each do |attribute|
      it { should allow_mass_assignment_of(attribute) }
     end
+  end
+
+  context 'nested_attributes' do
+    it { should accept_nested_attributes_for(:work_order_products) }
   end
 
   # classmethods

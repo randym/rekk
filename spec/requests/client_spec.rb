@@ -48,7 +48,9 @@ describe 'Client' do
       before(:each) do
         @client = FactoryGirl.build(:complete_client) 
         @contact = FactoryGirl.build(:complete_contact, client_id: @client.id) 
+        @billing_address = FactoryGirl.build(:complete_billing_address, client_id: @client.id)
         visit '/clients/new'
+
         select user.name
         fill_in 'client_name',  with: @client.name
         fill_in 'client_local_name', with: @client.local_name
@@ -75,7 +77,9 @@ describe 'Client' do
             fill_in 'division', with: @contact.division
           end
           find('#btn_save_contact').click
+
           # and again to let bootstrap modal get off the screen
+
           sleep 1
         end
 
@@ -107,6 +111,60 @@ describe 'Client' do
           page.should have_content(@contact.job_title)
         end
       end
+
+      context 'working with billing_addresses' do
+        before do
+          page.execute_script("$('#add_billing_address').click()")
+          # this is to give the bootstrap modal time to render 
+          sleep 1 
+          within('#add_billing_address_form') do
+            fill_in 'postal_code', with: @billing_address.postal_code
+            fill_in 'address_1', with: @billing_address.address_1
+            fill_in 'address_2', with: @billing_address.address_2
+            fill_in 'address_3', with: @billing_address.address_3
+            fill_in 'company_name', with: @billing_address.company_name
+            fill_in 'recipient_name', with: @billing_address.recipient_name
+            fill_in 'recipient_title', with: @billing_address.recipient_title
+          end
+          find('#btn_save_billing_address').click
+
+          # and again to let bootstrap modal get off the screen
+
+          sleep 1
+        end
+
+        it 'renders the added billing_address' do
+          page.should have_content(@billing_address.postal_code)
+        end
+
+        it 'removes billing_address when you click the remove-billing-address button' do
+          find('.remove-billing-address').click
+          page.should_not have_content(@billing_address.name)
+        end
+
+        it 'renders the edit form polulated with the billing address data when you click the edit-billing-address button' do
+          find('.edit-billing-address').click
+
+          sleep 1
+          within('#add_billing_address_form') do
+            find_field('postal_code').value.should == @billing_address.postal_code
+            find_field('address_1').value.should == @billing_address.address_1
+            find_field('address_2').value.should == @billing_address.address_2
+            find_field('address_3').value.should == @billing_address.address_3
+             find_field('company_name').value.should == @billing_address.complany_name
+            find_field('recipient_name').value.should == @billing_address.recipient_name
+            find_field('recipient_title').value.should == @billing_address.recipient_title
+          end
+        end
+
+        it 'properly passes the contact in with the client' do
+          click_on 'save_client'
+          click_on @client.name
+          page.evaluate_script 'client.edit()'
+          page.should have_content(@contact.job_title)
+        end
+      end
+
     end
   end
 end
