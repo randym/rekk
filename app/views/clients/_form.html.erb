@@ -92,21 +92,27 @@
     $(document).ready(function() {
         $('.btn.edit-contact').live('click', function() { client.edit_contact(this) }) 
         $('.btn.remove-contact').live('click', function() {client.remove_contact(this) })
-        $('.btn.edit-billing-address').live('click', function() { client.edit_billing_address(this) }) 
-        $('.btn.remove-billing-address').live('click', function() {client.remove_billing_address(this) })
+        $('.btn.edit-billing_address').live('click', function() { client.edit_billing_address(this) }) 
+        $('.btn.remove-billing_address').live('click', function() {client.remove_billing_address(this) })
 
 
         $('.form-edit-link').live('click', function() { client.edit(this) })
         $('#add_contact').click(function() {
           $('#add_contact_form').removeData('contact')
-          $('#add_contact_form').modal()
+          var options = { model: 'contact', 
+                          callback: function(data) { client.add_contact(data) } }
+          var contact_form = new ModalEditForm(options)
+          contact_form.show()
           });
         $('#add_billing_address').click(function() {
           $('#add_billing_address_form').removeData('billing_address');
-          $('#add_billing_address_form').modal();
+          var options = { model: 'billing_address', 
+                        callback: function(data) { client.add_billing_address(data) } }
+          var billing_address_form = new ModalEditForm(options)
+          billing_address_form.show()
           });
         });
-
+// TODO git this out of the view and include it when you need it
 var client = {
 edit: function(link) {
         var form = $(link).closest('form');
@@ -114,6 +120,7 @@ edit: function(link) {
         form.find('.extended-edit').show();
         $(link).hide();
       },
+
 add_contact : function(contact_info) {
                 contact = this._add_association('contact', 'contacts', contact_info);
                 contact.find('[name="client-name"]').text($('#client_name').val());
@@ -152,12 +159,12 @@ _add_association: function(association, target, association_info) {
                     var form_selector = ['#add_',association,'_form'].join('');
                     var card_style = [association, '-card'].join('');
                     var target_selector = ['#',target].join('');
-                    var template_selector = ['.',association, '-card-template'].join('');
+                    var template = [association, '-card-template'].join('');
                     var data = $(form_selector).data(association);
 
                     if(typeof data == 'undefined') {
-                      data = $(template_selector).clone();
-                      data.removeClass(template_selector);
+                      data = $('.' + template).clone();
+                      data.removeClass(template);
                       data.addClass(card_style);
                       data.appendTo($(target_selector));
                     }
@@ -169,24 +176,28 @@ _edit_association: function(source, association) {
                      var card_selector = ['.',association,'-card'].join('');
                      var form_selector = ['#add_',association,'_form'].join('');
                      var card = source.closest(card_selector);
-                     var inputs = $(form_selector + ' index');
+                     var inputs = $(form_selector + ' input');
                      $.map(inputs, function(input, index) {
-                         input.value = card.find("[name='" + input.id + '"]').text();
+                         input.value = card.find("[name='" + input.id + "']").text();
                          });
                      $(form_selector).data(association, card);
-                     $(form_selector).modal();
+                     var options = { model: association, 
+                        callback: function(data) { client['add_' + association](data) } }
+                        var association_form = new ModalEditForm(options)
+                        association_form.show();
                    },
 _remove_association: function(source, association, attributes_name) {
                        var card_selector = ['.',association,'-card'].join('');
-                       var association_id_selector = ['[name="',attributes_name,'_attributes[][id]"]'].join('');
-                       var destroy_input = ['<input type="hidden" name="',attributes_name,'_attributes][][_destroy]" value="1">'].join('');
+                       var association_id_selector = ['[name="client[',attributes_name,'_attributes][][id]"]'].join('');
+                       var destroy_input = ['<input type="hidden" name="client[',attributes_name,'_attributes][][_destroy]" value="1">'].join('');
                        var destroy_style = [association,'-card-destroy'].join('');
 
                        card = $(source).closest(card_selector);
                        if(card.find(association_id_selector).length) {
                          card.append(destroy_input);
-                         card.find('icon-edit').parent().hide();
-                         card.find('icon-trash').parent().hide();
+                         card.find('.icon-edit').parent().hide();
+                         card.find('.icon-trash').parent().hide();
+                         card.addClass('billing_address-card-destroy')
                        } else {
                          card.remove();
                        }

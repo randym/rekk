@@ -68,7 +68,7 @@ describe 'Client' do
         before do
           page.execute_script("$('#add_contact').click()")
           # this is to give the bootstrap modal time to render 
-          sleep 1 
+          sleep 2 
           within('#add_contact_form') do
             fill_in 'name', with: @contact.name
             fill_in 'email', with: @contact.email
@@ -76,7 +76,7 @@ describe 'Client' do
             fill_in 'phone', with: @contact.phone
             fill_in 'division', with: @contact.division
           end
-          find('#btn_save_contact').click
+          find('#btn_save').click
 
           # and again to let bootstrap modal get off the screen
 
@@ -126,7 +126,7 @@ describe 'Client' do
             fill_in 'recipient_name', with: @billing_address.recipient_name
             fill_in 'recipient_title', with: @billing_address.recipient_title
           end
-          find('#btn_save_billing_address').click
+          find('#btn_save').click
 
           # and again to let bootstrap modal get off the screen
 
@@ -137,13 +137,14 @@ describe 'Client' do
           page.should have_content(@billing_address.postal_code)
         end
 
-        it 'removes billing_address when you click the remove-billing-address button' do
-          find('.remove-billing-address').click
-          page.should_not have_content(@billing_address.name)
+        it 'removes billing_address when you click the remove-billing_address button' do
+
+          find('.remove-billing_address').click
+          page.should_not have_content(@billing_address.company_name)
         end
 
-        it 'renders the edit form polulated with the billing address data when you click the edit-billing-address button' do
-          find('.edit-billing-address').click
+        it 'renders the edit form polulated with the billing address data when you click the edit-billing_address button' do
+          find('.edit-billing_address').click
 
           sleep 1
           within('#add_billing_address_form') do
@@ -151,17 +152,22 @@ describe 'Client' do
             find_field('address_1').value.should == @billing_address.address_1
             find_field('address_2').value.should == @billing_address.address_2
             find_field('address_3').value.should == @billing_address.address_3
-             find_field('company_name').value.should == @billing_address.complany_name
+             find_field('company_name').value.should == @billing_address.company_name
             find_field('recipient_name').value.should == @billing_address.recipient_name
             find_field('recipient_title').value.should == @billing_address.recipient_title
           end
         end
 
         it 'properly passes the contact in with the client' do
+        select user.name
+        fill_in 'client_name',  with: @client.name
+        fill_in 'client_local_name', with: @client.local_name
+        fill_in 'client_accounting_code', with: @client.accounting_code
+        fill_in 'client_memo', with: @client.memo
           click_on 'save_client'
           click_on @client.name
           page.evaluate_script 'client.edit()'
-          page.should have_content(@contact.job_title)
+          page.should have_content(@billing_address.company_name)
         end
       end
 

@@ -1,0 +1,72 @@
+function ModalEditForm(options) {
+    this.init(options);
+}
+ModalEditForm.prototype = {
+  model: '',
+  callback: null,
+  form_selector: '',
+
+  init: function(options) {
+    this.callback = options.callback;
+    this.model = options.model;
+    this.form_selector = ['#add_',this.model,'_form'].join('');
+    this.setup_form();
+  },
+
+  show: function() {
+    $(this.form_selector).modal();
+  },
+
+  hide: function() {
+    $(this.form_selector).modal('hide');
+    this.clear_inputs();
+  },
+  setup_form: function() {
+    var _self = this;
+    $(this.form_selector + ' #btn_cancel').click(function() { _self.hide(); });
+    $(this.form_selector + ' #btn_save').click(function() { _self.process_save(); });
+  },
+
+  process_save: function() {
+    var data = this.valid_form_data();
+    if(data) {
+      if(typeof this.callback == 'function') {
+        this.callback(data);
+        this.hide();
+      }
+    }
+  },
+
+  valid_form_data: function() {
+    this.remove_error_messages();
+    var data = {};
+    var _self = this;
+    $(this.form_selector).find('input').each(function(index, item) {
+        data[item.name] = _self.validate_form_item(item);
+    });
+    if($('.error').size() > 0) { return false; }
+    return data;
+  },
+
+  validate_form_item: function(item) {
+    if(item.value === '' && $(item).attr('required')) {
+      $(item).closest('.control-group').addClass('error');
+      $(item).next().text('<%=I18n.t :required%>');
+    }
+    return item.value;
+  },
+
+  remove_error_messages: function() {
+    $('.error').each(function(index, item) {
+      $(item).removeClass('error');
+      $(item).find('.help-inline').text('');
+    });
+  },
+
+  clear_inputs: function() {
+    $(this.form_selector).find('input').each(function(index, item) {
+        item.value = "";
+    });
+  }
+};
+

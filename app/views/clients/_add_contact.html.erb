@@ -8,7 +8,7 @@
             <%=t :name, scope: [:activerecord, :models, :contact] %>
           </label>
           <div class="controls">
-            <%= text_field_tag(:name, '', class: "input-xlarge") %>
+            <%= text_field_tag(:name, '', class: "input-xlarge", required: true) %>
             <span class="help-inline"></span>
           </div>
         </div>
@@ -17,19 +17,17 @@
             <%=t :job_title, scope: [:activerecord, :models, :contact] %>
           </label>
           <div class="controls">
-            <%= text_field_tag(:job_title, '', class: "input-xlarge") %>
+            <%= text_field_tag(:job_title, '', class: "input-xlarge", required: true) %>
             <span class="help-inline"></span>
           </div>
-          
         </div>
-
 
         <div class="control-group">
           <label class="control-label">
             <%=t :email, scope: [:activerecord, :models, :contact] %>
           </label>
           <div class="controls">
-            <%= email_field_tag(:email, '', class: "input-xlarge") %>
+            <%= email_field_tag(:email, '', class: "input-xlarge", required: true) %>
             <span class="help-inline"></span>
           </div>
         </div>
@@ -39,7 +37,7 @@
             <%=t :phone, scope: [:activerecord, :models, :contact] %>
           </label>
           <div class="controls">
-            <%= telephone_field_tag(:phone, '', class: "input-xlarge") %>
+            <%= telephone_field_tag(:phone, '', class: "input-xlarge", required: true) %>
             <span class="help-inline"></span>
           </div>
         </div>
@@ -49,7 +47,7 @@
             <%=t :division, scope: [:activerecord, :models, :contact] %>
           </label>
           <div class="controls">
-            <%= text_field_tag(:division, '', class: "input-xlarge") %>
+            <%= text_field_tag(:division, '', class: "input-xlarge", required: true) %>
             <span class="help-inline"></span>
           </div>
         </div>
@@ -57,42 +55,8 @@
     </form>
     <hr>
     <div class="modal-footer">
-      <button id="btn_save_contact" class="btn btn-primary"><%=t :save%></button>
+      <button id="btn_save" class="btn btn-primary"><%=t :save%></button>
       <button id="btn_cancel" class="btn"><%=t :cancel%></button>
     </div>
   </div>
 </div>
-<script type="text/javascript">
-  $(document).ready(function() {
-      $('#btn_cancel').click(function() {
-        $('#add_contact_form').modal('hide');
-        })
-      $('#btn_save_contact').click(function() {
-        $('.error').each(function(index, item) { 
-          $(item).removeClass('error')
-          $(item).find('.help-inline').text('') 
-          })
-
-        var data = $('#add_contact_form')
-        var contact_info = {}
-        data.find('input').each(function(index, item) {
-          contact_info[item.name] = item.value
-          });
-        for(var x in contact_info) {
-        if(contact_info[x] == '') { 
-        var selector = ['#',x].join('');
-        data.find(selector).closest('.control-group').addClass('error')
-        data.find(selector).next().text('<%=t :required%>')
-        }
-        }
-        if($('.error').size() > 0) { return }
-
-        client.add_contact(contact_info);
-        data.find('input').each(function(index, item) {
-            item.value = ""
-            });
-
-        $('#add_contact_form').modal('hide');
-      })
-  })
-</script>
