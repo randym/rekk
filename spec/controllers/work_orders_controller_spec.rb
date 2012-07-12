@@ -23,7 +23,7 @@ describe WorkOrdersController do
   # WorkOrder. As you add validations to WorkOrder, be sure to
   # update the return value of this method accordingly.
   def valid_attributes
-    {client_id: 1, owner_id: 1, author_id: 1, payment_type_id:1}
+    {client_id: 1, owner_id: 1, author_id: 1}
   end
   
   # This should return the minimal set of values that should be in the session
@@ -53,14 +53,6 @@ describe WorkOrdersController do
     it "assigns a new work_order as @work_order" do
       get :new, {}, valid_session
       assigns(:work_order).should be_a_new(WorkOrder)
-    end
-  end
-
-  describe "GET edit" do
-    it "assigns the requested work_order as @work_order" do
-      work_order = WorkOrder.create! valid_attributes
-      get :edit, {:id => work_order.to_param}, valid_session
-      assigns(:work_order).should eq(work_order)
     end
   end
 

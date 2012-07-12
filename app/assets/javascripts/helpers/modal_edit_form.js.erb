@@ -1,3 +1,18 @@
+/* ModelEditForm is an OPININATED object that manages a twitter-bootstrap based modal component.
+  It expects that your document contains the following elements
+  
+  id:add_[model_name]_form which is form containing the fields
+    you want to have entered or editied. 
+      
+  It only supports input tags for data entry
+
+  It will force the user to enter any input that has a 'required' attribute
+
+  It will return an object(hash) of the name: value for each input to the function specified in the callback option.
+
+  It expects a required: entry in your I18n yaml
+*/
+
 function ModalEditForm(options) {
     this.init(options);
 }

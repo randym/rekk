@@ -1,0 +1,49 @@
+<%= form.fields_for :payment do |payment_form| %>
+  <label class="control-label" for="bill_to">
+    <%= t :bill_to, scope: [:activerecord, :models, :payment] %>
+  </label>
+  <div class="controls">
+    <%= payment_form.text_field :bill_to, class: 'input-xlarge' %>
+  </div>
+  <br/>
+  <label class="control-label">
+    <%= t :closing, scope: [:activerecord, :models, :payment] %>
+  </label>
+  <div class="controls">
+    <%= payment_form.select(:closing_year, Payment.allowed_closing_years,  { selected:(@work_order.payment.closing_year || Time.zone.now.next_month.year) }, {class: 'span4', style: 'float:left;'}) %>
+    <%= payment_form.select(:closing_month, [1,2,3,4,5,6,7,8,9,10,11,12],  { selected:(@work_order.payment.closing_month || Time.zone.now.next_month.month) }, {class: 'span4', style: 'float:left;margin-left:10px;'}) %>
+  </div>
+  <br>
+  <br>
+  <label class="control-label" for="payment_deadline">
+    <%= t :payment_deadline, scope: [:activerecord, :models, :payment] %>
+  </label>
+  <div class="controls">
+    <div class="input-append date" id="payment_deadline" data-date="<%=@work_order.payment.payment_deadline || Time.zone.now.next_month %>" data-date-format="yyyy-mm-dd">
+      <%= payment_form.text_field(:payment_deadline, class: 'span10') %>
+      <span class="add-on"><i class="icon-th"></i></span>
+    </div>
+  </div>
+  <br>
+  <label class="control-label" for="paid_on">
+    <%= t :paid_on, scope: [:activerecord, :models, :payment] %>
+  </label>
+  <div class="controls">
+    <div class="input-append date" id="paid_on_date_picker" data-date="<%=@work_order.payment.paid_on || Time.zone.now%>" data-date-format="yyyy-mm-dd">
+      <%= payment_form.text_field(:paid_on, class: 'span10', readonly: true) %>
+      <% #<input class="span2" size="16" type="text" value="12-02-2012" readonly=""> %>
+      <span class="add-on"><i class="icon-th"></i></span>
+    </div>
+  </div>
+  <br>
+  <label class="control-label" for='billing_address'>
+    <%= t :billing_address, scope: [:active_record, :models, :payment] %>
+  </label>
+  <div class="controls">
+    <%=  payment_form.collection_select(:billing_address_id, (@work_order.client ? @work_order.client.billing_addresses : []), :id, :company_name, prompt: t(:select_billing_address)) %>
+
+  <span class="btn" id="add_billing_address"><i class="icon-plus"></i></span>
+  </div>
+
+<% end%>
+

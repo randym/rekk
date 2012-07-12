@@ -2,24 +2,23 @@ class WorkOrder < ActiveRecord::Base
   belongs_to :author, class_name: 'User', inverse_of: :authored_work_orders
   belongs_to :owner, class_name: 'User', inverse_of: :owned_work_orders
   belongs_to :client, inverse_of: :work_orders
-  belongs_to :payment_type
   has_many :work_order_products, dependent: :delete_all, inverse_of: :work_order
-
+  belongs_to :payment, inverse_of: :work_order, dependent: :delete
+  has_one :billing_address, through: :payment 
   attr_accessible :author_id, :owner_id, :client_id, :payment_type_id, 
-                  :memo, :work_order_products_attributes, :payment_deadline,
-                  :closing_year, :closing_month, :bill_to, :paid_on, :billing_address_id
+                  :memo, :work_order_products_attributes, :payment_attributes
+                  
 
   accepts_nested_attributes_for :work_order_products, allow_destroy: true
+  accepts_nested_attributes_for :payment, allow_destroy: true,
+    reject_if: proc { |attributes|
+      attributes[:payment_deadline].blank?
+  } 
 
-  validates_presence_of :client_id, :owner_id, :author_id, :payment_type_id
+  validates_presence_of :client_id, :owner_id, :author_id
 
   def self.by_author(user)
     where(author_id: user.id)
-  end
-
-  def self.allowed_closing_years
-    (2006..(Time.zone.now.year+1)).to_a
-    
   end
 
   def self.by_owner(user)

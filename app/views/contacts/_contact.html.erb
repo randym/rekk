@@ -8,9 +8,7 @@
   <input type=hidden name="client[contacts_attributes][][division]" value="<%=contact.division%>">
   <input type=hidden name="client[contacts_attributes][][phone]" value="<%=contact.phone%>">
   <input type=hidden name="client[contacts_attributes][][job_title]" value="<%=contact.job_title%>">
-  <% if contact.client %>
-    <span class="pull-left client-info" name='client-name'><%=link_to contact.client.name, client_path(contact.client)%></span>
-  <%end %>
+    <span class="pull-left client-info" name='client-name'><%= contact.client.name if contact.client%></span>
 
   <% if controller.is_a? ClientsController %>
     <a class="btn pull-right edit-contact">
@@ -18,9 +16,7 @@
     </a>
   <% end %>
   <br/>
-  <%if contact.client %>
-    <span class="pull-left client-info" name='client-local_name'><%= contact.client.local_name %></span>
-  <% end %>
+    <span class="pull-left client-info" name='client-local_name'><%= contact.client.local_name if contact.client %></span>
   <br/>
 
   <% if controller.is_a? ClientsController %>

@@ -1,23 +1,11 @@
-  <%= form_for(@work_order, html: { class: 'form-horizontal' }) do |f| %>
-  <% if @work_order.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@work_order.errors.count, "error") %> prohibited this work_order from being saved:</h2>
-
-      <ul>
-        <% @work_order.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-        <% end %>
-      </ul>
-    </div>
-
-  <% end %>
+<%= form_for(@work_order, html: { class: 'form-horizontal' }) do |f| %>
   <div class='row-fluid'> 
     <div class="span3">
       <label class="control-label" for="client">
         <%= t :client, scope: [:activerecord, :models, :work_order] %>
       </label>
       <div class="controls">
-        <%= collection_select(:work_order, :client_id, Client.all, :id, :name, prompt: t(:select_organization)) %>
+        <%= collection_select(:work_order, :client_id, Client.all, :id, :name, prompt: t(:select_client)) %>
       </div>
     </div>
     <div class="span3">
@@ -44,7 +32,7 @@
         <input type="text" class="input-medium" value="<%= @work_order.created_at || Time.now.strftime('%Y-%m-%d %H:%M') %>" readonly></input>
       </div>
     </div>
-<!--    <div class="span2">
+    <!--    <div class="span2">
       <label class="control-label" for="updated">
         <%= t :updated, scope: [:activerecord, :models, :work_order] %>
       </label>
@@ -65,9 +53,7 @@
         <%= t :client_memo %>
       </label>
       <div class="controls">
-        <textarea class="span12" rows="6" id="organization_memo" readonly>
-          <%= @work_order.client ? @work_order.client.memo : '' %>
-        </textarea>
+      <textarea class="span12" rows="6" id="client_memo" readonly><%= @work_order.client ? @work_order.client.memo : '' %></textarea>
       </div>
       <br>
       <label class="control-label" for="memo">
@@ -82,69 +68,26 @@
 
       <ul class="nav nav-tabs" id="payment_tabs">
         <li class="active"><a href="#payment_info" data-toggle="tab">Payment</a></li>
-        <li><a href="#billing_info" data-toggle="tab">Billing</a></li>
       </ul>
 
       <div class="tab-content">
         <div class="tab-pane active" id="payment_info">
-          <label class="control-label" for="payment_type">
-            <%= t :payment_type, scope: [:activerecord, :models, :work_order] %>
-          </label>
-          <div class="controls">
-            <%= collection_select(:work_order, :payment_type_id, PaymentType.all, :id, :name, prompt: t(:select_payment_type)) %>
-          </div>
-          <div id="invoice_payment_fields">
-            <br/>
-            <label class="control-label" for="bill_to">
-              <%= t :bill_to, scope: [:activerecord, :models, :work_order] %>
-            </label>
-            <div class="controls">
-              <%= f.text_field :bill_to, class: 'input-xlarge' %>
-            </div>
-            <br/>
-            <label class="control-label">
-              <%= t :closing, scope: [:activerecord, :models, :work_order] %>
-            </label>
-            <div class="controls">
-              <%= select(:work_order, :closing_year, WorkOrder.allowed_closing_years,  { selected:(@work_order.closing_year || Time.zone.now.next_month.year) }, {class: 'span4', style: 'float:left;'}) %>
-              <%= select(:work_order, :closing_month, [1,2,3,4,5,6,7,8,9,10,11,12],  { selected:(@work_order.closing_year || Time.zone.now.next_month.month) }, {class: 'span4', style: 'float:left;margin-left:10px;'}) %>
-            </div>
-            <br>
-            <br>
-            <label class="control-label" for="payment_deadline">
-              <%= t :payment_deadline, scope: [:activerecord, :models, :work_order] %>
-            </label>
-            <div class="controls">
-              <div class="input-append" id="dp3" data-date="<%=@work_order.payment_deadline || Time.zone.now%>" data-date-format="yyyy-mm-dd">
-                <%= f.text_field(:payment_deadline, class: 'span10', readonly: true) %>
-                <span class="add-on"><i class="icon-th"></i></span>
-              </div>
-            </div>
-            <br>
-            <label class="control-label" for="paid_on">
-              <%= t :paid_on, scope: [:activerecord, :models, :work_order] %>
-            </label>
-            <div class="controls">
-              <div class="input-append" id="paid_on_date_picker" data-date="<%=@work_order.paid_on%>" data-date-format="yyyy-mm-dd">
-                <%= f.text_field(:paid_on, class: 'span10', readonly: true) %>
-                <% #<input class="span2" size="16" type="text" value="12-02-2012" readonly=""> %>
-                <span class="add-on"><i class="icon-th"></i></span>
-              </div>
-            </div>
-          </div>
+            <%= render 'payments/form', form: f %>          
         </div>
-        <div class="tab-pane" id="billing_info">
-          wha?
-        </div>
+
       </div>
     </div>
   </div>
+</div>
   <div class="actions">
     <%= f.submit %>
   </div>
 <% end %>
+<%= javascript_include_tag "work_orders" %>
+
 <script type="text/javascript">
-  $('#dp3').datepicker()
+  $('#payment_deadline').datepicker()
   $('#paid_on_date_picker').datepicker()
   $('#payment_tabs a:first').tab('show')
-  </script>
+</script>
+<%= render 'clients/add_billing_address' %>

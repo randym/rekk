@@ -1,9 +1,9 @@
 Rekk::Application.routes.draw do
 
-  resources :work_orders
+  resources :work_orders, except: [:edit]
 
   root :to => 'home#index'
-
+  resources :billing_addresses, only: [:create]
   resources :home, only: [:index]
   get '/login', to: 'home#login', as: :login
   resources :users, only: [:index, :show, :destroy]

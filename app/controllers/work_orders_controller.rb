@@ -1,6 +1,6 @@
 class WorkOrdersController < ApplicationController
   protect_from_forgery
-
+  before_filter :work_orders_list, only: [:show]
   # GET /work_orders
   # GET /work_orders.json
   def index
@@ -15,8 +15,9 @@ class WorkOrdersController < ApplicationController
   # GET /work_orders/1
   # GET /work_orders/1.json
   def show
-    @work_order = WorkOrder.find(params[:id])
-
+    @work_order = WorkOrder.find(params[:id], include: :payment)
+    puts @work_order.inspect
+    @work_order.payment ||= Payment.new
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @work_order }
@@ -28,15 +29,11 @@ class WorkOrdersController < ApplicationController
   def new
     @work_order = WorkOrder.new
     @work_order.author = current_user
+    @work_order.payment ||= Payment.new
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @work_order }
     end
-  end
-
-  # GET /work_orders/1/edit
-  def edit
-    @work_order = WorkOrder.find(params[:id])
   end
 
   # POST /work_orders
@@ -81,5 +78,9 @@ class WorkOrdersController < ApplicationController
       format.html { redirect_to work_orders_url }
       format.json { head :no_content }
     end
+  end
+  private
+  def work_orders_list
+    @work_orders = params[:alternate] ? WorkOrder.all : WorkOrder.by_owner(current_user)
   end
 end

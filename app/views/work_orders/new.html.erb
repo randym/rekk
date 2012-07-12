@@ -1,5 +1,16 @@
-<h1>New work_order</h1>
+ <div class="span12">
+  <% if @work_order.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@work_order.errors.count, "error") %> prohibited this work_order from being saved:</h2>
 
-<%= render 'form' %>
-
-<%= link_to 'Back', work_orders_path %>
+      <ul>
+        <% @work_order.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+ <div class="well">
+    <%= render 'form' %>
+  </div>
+</div>

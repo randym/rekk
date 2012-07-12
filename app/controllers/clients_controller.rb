@@ -1,7 +1,7 @@
 class ClientsController < ApplicationController
   protect_from_forgery
   before_filter :clients_list, only: [:show, :new, :index]
- 
+
   def index
     respond_to do |format|
       format.html # index.html.erb
@@ -14,13 +14,17 @@ class ClientsController < ApplicationController
     client.save!
     redirect_to clients_path
   end 
- 
+
   def show
-    @client = Client.find(params[:id])
-  end
- 
+    respond_to do |format|
+      @client = Client.includes(:contacts, :billing_addresses).find(params[:id])
+      format.html
+      format.json { render json: @client.to_json( include: [:contacts, :billing_addresses] ) }
+    end
+  end 
+
   def new
-   @client = Client.new(:user_id => current_user.id)
+    @client = Client.new(:user_id => current_user.id)
   end
 
   def update
@@ -29,7 +33,7 @@ class ClientsController < ApplicationController
     flash[:sucess] = "woot!"
     redirect_to client_path(client)
   end
-  
+
   def destroy
     client = Client.find(params[:id])
     client.destroy

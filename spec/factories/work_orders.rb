@@ -5,6 +5,5 @@ FactoryGirl.define do
     association :author, factory: :user
     association :owner, factory: :user
     association :client
-    association :payment_type
   end
 end
