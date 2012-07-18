@@ -1,12 +1,115 @@
-    <%= render 'layouts/search_list',  items: @clients, 
-      list_label: t(:clients),
-      item_label: Proc.new { |item| "#{item.name}(#{item.local_name})" },
-      default_label: I18n.t(:only_my_items),
-      alternate_label: I18n.t(:all_items),
-      alternate_path: clients_path(alternate: 1) %>
+<%= render 'search' %>
+<div class="span9">
+  <div class="btn-toolbar">
+    <div class="btn-group">
+      <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+        <i class="icon-check-empty icon-large">&nbsp;&nbsp;<span class="icon-caret-down"></span></i>
+      </a>
+      <ul class="dropdown-menu">
+        <li><a href="#"><i class="icon-check"> All</i></a></li>
+        <li><a href="#">None</a></li>
+      </ul>
+    </div>
+    <div class="btn-group">
+      <div class="btn input-prepend">
+        <span class="add-on"><i class="icon-search icon-large"></i></span>
+        <input class="input-xxlarge" type="text" placeholder="<%= I18n.t(:search)%>"/>
+      </div>
+      <label class="btn">
+        <input type="checkbox" name="selfish" />
+        <%= link_to t(:only_me), work_orders_path %>
+      </label>
+    </div>
 
-    <%= render 'layouts/index', title: I18n.t(:work_orders), 
-      intro: I18n.t(:work_orders_introduction),
-      button: I18n.t(:create_work_order),
-      path: new_work_order_path %> 
+  <div class="btn-group hidden">
+    <a class="btn btn-danger"><i class="icon-trash icon-white"> Delete</i></a>
+  </div>
+</div>
+<% @work_orders.each do |work_order| %>
+  <div style="margin-left:5px;">
+    <div class="well row">
+      <div class="span1 item-selector">
+        <input type="checkbox" name="work_order_<%=work_order.id%>"/>
+      </div>
+      <div class="span11">
+        <div class="span9">
+          <h5><%= work_order.client.name %></h5>
+          <h6><small><%= t :owner, scope: [:activerecord, :models, :work_order]%>:</small>
+            <%= work_order.owner.name %></h6>
+          <h6><small><%= t :author, scope: [:activerecord, :models, :work_order]%>:</small>
+            <%= work_order.author.name %></h6>
 
+        </div>
+
+        <div class="span3">
+          <label class="pull-left">
+
+            <h5>&yen;300,000,000</h5>
+            <%= t :payment_deadline, scope: [:activerecord, :models, :payment] %>
+            <br>
+            <%= work_order.payment.payment_deadline if work_order.payment%>
+            <h6><%= work_order.status %></h6>
+          </label>
+          <span class="pull-right">
+            <a class="btn btn-large" href="<%= work_order_path(work_order) %>">
+              <i class="icon-edit icon-large"></i>
+            </a>
+            <br><br>
+            <a class="btn btn-danger btn-large" href="<%= work_order_path(work_order) %>">
+              <i class="icon-remove icon-large icon-white"></i>
+            </a>
+          </span>
+
+        </div>
+      </div>
+
+      <div class="span10" style="margin-top:-20px">
+        <div class="tabbable tabs-left">
+          <ul class="nav nav-tabs" id="work_order_tabs">
+            <li class="active"><a href="#products_<%= work_order.id %>" data-toggle="tab">Products</a></li>
+            <li><a href="#memo_<%= work_order.id %>" data-toggle="tab">Memo</a></li>
+            <li><a href="#change_log_<%= work_order.id %>" data-toggle="tab">change_log</a></li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane active scrollable" id="products_<%= work_order.id %>">
+              foo
+              <br>
+              foo
+              <br>
+              foo
+              <br>
+              foo
+              <br>
+              foo
+              <br>
+              foo
+              <br>
+              foo
+              <br>
+              foo
+              <br>
+              foo
+              <br>
+              foo
+              <br>
+              foo
+              <br>
+              foo
+              <br>
+              foo
+              <br>
+
+            </div>
+            <div class="tab-pane" id="memo_<%= work_order.id %>">
+              <%= work_order.memo %>
+            </div>
+            <div class="tab-pane" id="change_log_<%= work_order.id %>">
+              hoge
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
+</div>

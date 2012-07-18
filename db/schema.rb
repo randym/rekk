@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120712055052) do
+ActiveRecord::Schema.define(:version => 20120718031251) do
 
   create_table "billing_addresses", :force => true do |t|
     t.integer  "client_id",       :null => false
@@ -120,9 +120,10 @@ ActiveRecord::Schema.define(:version => 20120712055052) do
     t.integer  "owner_id"
     t.integer  "client_id"
     t.text     "memo"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
     t.integer  "payment_id"
+    t.string   "status",     :default => "new"
   end
 
 end

@@ -9,10 +9,10 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  *= require_self
- *= require bootstrap/bootstrap.css.scss.erb
- *= require bootstrap/bootstrap-responsive.css
- *= require bootstrap/datepicker.css 
- *= require layout.css
- *= require contacts.css
- *= require billing_addresses.css
- */
+ *= require bootstrap_and_overrides
+ *= require bootstrap/datepicker
+ *= require layout
+ *= require contacts
+ *= require billing_addresses
+ *= require work_orders 
+*/

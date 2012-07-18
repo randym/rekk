@@ -1,0 +1,53 @@
+<div class="span3">
+  <div class="well">
+    <h6>Create a...<br>
+       <%= link_to(new_work_order_path, class: "btn btn-primary", id: 'new_item') do %>
+        <i class="icon-plus-sign"></i>&nbsp;<%= t :new_work_order%>
+      <% end %>
+        <hr>
+    </h6>    
+    <h6 class=""> Find a Work Order </h6>
+       <br>
+    <ul class="nav nav-list">
+      <li class="nav-header">
+      <%= t(:by_status) %>
+      </li>
+      <li class="<%= 'active' if params[:status] == 'new' %>">
+      <%= link_to(work_orders_path(params: {status: 'new'})) do %>
+        <i class="icon-plus-sign"></i>
+        <%= t :new %>
+      <% end %>
+      </li>
+      <li class="<%= 'active' if params[:status] == 'submitted' %>"> 
+      <%= link_to(work_orders_path(params: {status: 'submitted'})) do %>
+        <i class="icon-upload-alt"></i>
+        <%= t :submitted %>
+      <% end %>
+      </li>
+      <li class="<%= 'active' if params[:status] == 'processed' %>"> 
+      <%= link_to(work_orders_path(params: {status: 'processed'})) do %>
+        <i class="icon-bolt"></i>
+        <%= t :processed %>
+      <% end %>
+      </li>
+      <li class="<%= 'active' if params[:status] == 'invoiced' %>"> 
+      <%= link_to(work_orders_path(params: {status: 'invoiced'})) do %>
+        <i class="icon-download-alt"></i>
+        <%= t :invoiced %>
+      <% end %>
+      </li>
+
+      <li class="<%= 'active' if params[:status] == 'shipping' %>"> 
+
+      <%= link_to(work_orders_path(params: {status: 'shipping'})) do %>
+        <i class="icon-envelope-alt"></i>
+        <%= t :shipping %>
+      <% end %>
+      </li>
+
+
+
+
+    </ul>
+  </div>
+</div>

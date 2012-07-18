@@ -4,6 +4,7 @@ class WorkOrdersController < ApplicationController
   # GET /work_orders
   # GET /work_orders.json
   def index
+    # how to deal with search, selfish and status params?
     @work_orders = WorkOrder.all
     @clients = Client.all
     respond_to do |format|

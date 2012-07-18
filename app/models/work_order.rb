@@ -29,4 +29,8 @@ class WorkOrder < ActiveRecord::Base
     where client_id: client.id
   end
 
+  def self.by_status(status)
+    where status: status
+  end
+
 end

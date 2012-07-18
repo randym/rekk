@@ -1,3 +1,11 @@
 // Place all the styles related to the work_orders controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+.span1.item-selector {
+  width: 10px;
+}
+.tab-pane.scrollable {
+  height: 115px;
+  overflow:scroll;
+
+}
