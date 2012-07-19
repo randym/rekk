@@ -1,4 +1,10 @@
 language: ruby
+notifications:
+  irc: "irc.reallyenglish.com#rekk"
+  email:
+    recipients:
+      - digital.ipseity@gmail.com
+    on_success: always
 rvm:
   - 1.9.3
 script:
