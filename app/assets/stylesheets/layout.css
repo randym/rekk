@@ -1,3 +1,6 @@
 .extended-edit {
   display: none;
 }
+.pagination.no-height {
+height: auto
+}

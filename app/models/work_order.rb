@@ -16,7 +16,7 @@ class WorkOrder < ActiveRecord::Base
   } 
   default_scope order('created_at desc')
   validates_presence_of :client_id, :owner_id, :author_id
-  paginates_per 1
+  paginates_per 2
   def self.by_author(user)
     where(author_id: user.id)
   end

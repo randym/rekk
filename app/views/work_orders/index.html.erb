@@ -13,6 +13,7 @@
 
         <span class="add-on"><i class="icon-search icon-large"></i></span>
         <input class="input-xxlarge" type="text" placeholder="<%= I18n.t(:search)%>"/>
+        <li class="btn btn-info" id="search"><i class="icon-refresh"></i></li>
         <%= link_to t(:only_me), work_orders_path(params: request.query_parameters.merge({selfish:params[:selfish] != 'true'})), class: "btn #{'active' if params[:selfish] == 'true'}" %>
         <a style="margin-left:20px;" class="btn btn-danger"><i class="icon-trash icon-white"> Delete</i></a>
       </div>
@@ -80,7 +81,6 @@
               <br>
               foo
               <br>
-
             </div>
             <div class="tab-pane" id="memo_<%= work_order.id %>">
               <%= work_order.memo %>
@@ -93,4 +93,6 @@
       </div>
     </div>
   <% end %>
+  <%= paginate @work_orders %>
 </div>
+<br><br>
