@@ -14,11 +14,12 @@
         <span class="add-on"><i class="icon-search icon-large"></i></span>
         <input class="input-xxlarge" type="text" placeholder="<%= I18n.t(:search)%>"/>
         <%= link_to t(:only_me), work_orders_path(params: request.query_parameters.merge({selfish:params[:selfish] != 'true'})), class: "btn #{'active' if params[:selfish] == 'true'}" %>
-        <a style="margin-left:20px;" class="btn btn-danger hidden"><i class="icon-trash icon-white"> Delete</i></a>
+        <a style="margin-left:20px;" class="btn btn-danger"><i class="icon-trash icon-white"> Delete</i></a>
       </div>
     </div>
   </div>
 
+        <%= paginate @work_orders %>
   <% @work_orders.each do |work_order| %>
     <div class="row well span12" style="margin-left:0px;">
       <div class="span1 item-selector">

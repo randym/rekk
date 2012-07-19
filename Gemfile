@@ -5,6 +5,7 @@ gem 'jquery-rails'
 gem 'pg'
 gem 'omniauth-google-apps'
 gem 'thin'
+gem 'kaminari'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'

@@ -5,7 +5,7 @@ class WorkOrdersController < ApplicationController
   # GET /work_orders.json
   def index
     # how to deal with search, selfish and status params?
-    @work_orders = WorkOrder.all
+    @work_orders = WorkOrder.scoped.page params[:page]
     @clients = Client.all
     respond_to do |format|
       format.html # index.html.erb
