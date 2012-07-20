@@ -19,79 +19,83 @@
       </div>
     </div>
   </div>
-
-        <%= paginate @work_orders %>
+  <%= paginate @work_orders %>
   <% @work_orders.each do |work_order| %>
-    <div class="row well span12" style="margin-left:0px;">
-      <div class="span1 item-selector">
-        <input type="checkbox" name="work_order_<%=work_order.id%>"/>
-      </div>
-      <div class="span11">
-        <div class="span9">
-          <h3><%= work_order.client.name %></h3>
-          <h6><small><%= t :owner, scope: [:activerecord, :models, :work_order]%>:</small>
-            <%= work_order.owner.name %></h6>
-          <h6><small><%= t :author, scope: [:activerecord, :models, :work_order]%>:</small>
-            <%= work_order.author.name %></h6>
+    <a href="<%= work_order_path(work_order) %>">
+      <div class="row well span12" style="margin-left:0px;">
+        <div class="span1 item-selector">
+          <input type="checkbox" name="work_order_<%=work_order.id%>"/>
         </div>
+        <div class="span11">
+          <div class="span9">
+            <h3><%= work_order.client.name %></h3>
+            <h6><small><%= t :owner, scope: [:activerecord, :models, :work_order]%>:</small>
+              <%= work_order.owner.name %></h6>
+            <h6><small><%= t :author, scope: [:activerecord, :models, :work_order]%>:</small>
+              <%= work_order.author.name %></h6>
+          </div>
 
-        <div class="span3">
-          <label class="pull-right" style="text-align:right">
+          <div class="span3">
+            <label class="pull-right" style="text-align:right">
 
-            <h5>&yen;300,000,000</h5>
-            <%= t :payment_deadline, scope: [:activerecord, :models, :payment] %>
-            <%= work_order.payment.payment_deadline if work_order.payment%>
-            <h6><%= work_order.status %></h6>
-          </label>
+              <h2>&yen;300,000,000</h2>
+              <h6><small>
+              <%= t :payment_deadline, scope: [:activerecord, :models, :payment] %>
+            </small>
+              <%= work_order.payment.payment_deadline if work_order.payment%>
+            </h6>
+              <h6><%= work_order.status %></h6>
+            </label>
+          </div>
         </div>
-      </div>
-      <div class="span11">
-        <br>
-        <div class="tabbable tabs-left">
-          <ul class="nav nav-tabs" id="work_order_tabs">
-            <li class="active"><a href="#products_<%= work_order.id %>" data-toggle="tab"><%= t :products %></a></li>
-            <li><a href="#memo_<%= work_order.id %>" data-toggle="tab"><%= t :memo %></a></li>
-            <li><a href="#change_log_<%= work_order.id %>" data-toggle="tab"><%= t :change_log %></a></li>
-          </ul>
-          <div class="tab-content">
-            <div class="tab-pane active scrollable" id="products_<%= work_order.id %>">
-              foo
-              <br>
-              foo
-              <br>
-              foo
-              <br>
-              foo
-              <br>
-              foo
-              <br>
-              foo
-              <br>
-              foo
-              <br>
-              foo
-              <br>
-              foo
-              <br>
-              foo
-              <br>
-              foo
-              <br>
-              foo
-              <br>
-              foo
-              <br>
-            </div>
-            <div class="tab-pane" id="memo_<%= work_order.id %>">
-              <%= work_order.memo %>
-            </div>
-            <div class="tab-pane" id="change_log_<%= work_order.id %>">
-              hoge
+      </a>
+        <div class="span11">
+          <br>
+          <div class="tabbable tabs-left">
+            <ul class="nav nav-tabs" id="work_order_tabs">
+              <li class="active"><a href="#products_<%= work_order.id %>" data-toggle="tab"><%= t :products %></a></li>
+              <li><a href="#memo_<%= work_order.id %>" data-toggle="tab"><%= t :memo %></a></li>
+              <li><a href="#change_log_<%= work_order.id %>" data-toggle="tab"><%= t :change_log %></a></li>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane active scrollable" id="products_<%= work_order.id %>">
+                foo
+                <br>
+                foo
+                <br>
+                foo
+                <br>
+                foo
+                <br>
+                foo
+                <br>
+                foo
+                <br>
+                foo
+                <br>
+                foo
+                <br>
+                foo
+                <br>
+                foo
+                <br>
+                foo
+                <br>
+                foo
+                <br>
+                foo
+                <br>
+              </div>
+              <div class="tab-pane" id="memo_<%= work_order.id %>">
+                <%= work_order.memo %>
+              </div>
+              <div class="tab-pane" id="change_log_<%= work_order.id %>">
+                hoge
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
   <% end %>
   <%= paginate @work_orders %>
 </div>

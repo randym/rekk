@@ -1,4 +1,15 @@
 <%= form.fields_for :payment do |payment_form| %>
+  <label class="control-label" for="has_payment">
+    <%= t :payment_type, scope: [:activerecord, :models, :work_order] %>
+  </label>
+  <div class="controls">
+      <%= t :invoice, scope: [:activerecord, :models, :work_order]%>
+      <input type="radio" id="has_payment" name="has_payment" value="true" <%= 'checked="checked"' if @work_order.payment.is_a?(Payment) %>>
+      <span style="margin-left: 20px;">
+      <%= t :user_pay, scope: [:activerecord, :models, :work_order] %>
+      <input type="radio" id="user_pay" name="has_payment" value="false" <%= 'checked="checked"' unless @work_order.payment.is_a?(Payment) %> >
+  </span></div>
+  <br>
   <label class="control-label" for="bill_to">
     <%= t :bill_to, scope: [:activerecord, :models, :payment] %>
   </label>
@@ -42,8 +53,29 @@
   <div class="controls">
     <%=  payment_form.collection_select(:billing_address_id, (@work_order.client ? @work_order.client.billing_addresses : []), :id, :company_name, prompt: t(:select_billing_address)) %>
 
-  <span class="btn" id="add_billing_address"><i class="icon-plus"></i></span>
+    <span class="btn" id="add_billing_address"><i class="icon-plus"></i></span>
   </div>
 
 <% end%>
+<script type="text/javascript">
+  $(document).ready(function() {
+      $('#has_payment').click(function() {
+      // enable all payment fields 
+      //find the form, and get all of it's inputs
+      //for each input that is not named 'has_payment'
+      // enable it  
+      })
+      $('#user_pay').click(function() {
+// disable all payment fields
+       
+        })
+
+      })
+function enable_payment() {
+
+}
+function disable_payment() {
+
+}
+</script>
 
