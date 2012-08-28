@@ -1,16 +1,5 @@
 <%= form.fields_for :payment do |payment_form| %>
-  <label class="control-label" for="has_payment">
-    <%= t :payment_type, scope: [:activerecord, :models, :work_order] %>
-  </label>
-  <div class="controls">
-      <%= t :invoice, scope: [:activerecord, :models, :work_order]%>
-      <input type="radio" id="has_payment" name="has_payment" value="true" <%= 'checked="checked"' if @work_order.payment.is_a?(Payment) %>>
-      <span style="margin-left: 20px;">
-      <%= t :user_pay, scope: [:activerecord, :models, :work_order] %>
-      <input type="radio" id="user_pay" name="has_payment" value="false" <%= 'checked="checked"' unless @work_order.payment.is_a?(Payment) %> >
-  </span></div>
-  <br>
-  <label class="control-label" for="bill_to">
+ <label class="control-label" for="bill_to">
     <%= t :bill_to, scope: [:activerecord, :models, :payment] %>
   </label>
   <div class="controls">
@@ -36,10 +25,10 @@
     </div>
   </div>
   <br>
-  <label class="control-label" for="paid_on">
+ <!-- <label class="control-label" for="paid_on">
     <%= t :paid_on, scope: [:activerecord, :models, :payment] %>
   </label>
-  <div class="controls">
+ <div class="controls">
     <div class="input-append date" id="paid_on_date_picker" data-date="<%=@work_order.payment.paid_on || Time.zone.now%>" data-date-format="yyyy-mm-dd">
       <%= payment_form.text_field(:paid_on, class: 'span10', readonly: true) %>
       <% #<input class="span2" size="16" type="text" value="12-02-2012" readonly=""> %>
@@ -47,6 +36,7 @@
     </div>
   </div>
   <br>
+  -->
   <label class="control-label" for='billing_address'>
     <%= t :billing_address, scope: [:active_record, :models, :payment] %>
   </label>
@@ -55,27 +45,7 @@
 
     <span class="btn" id="add_billing_address"><i class="icon-plus"></i></span>
   </div>
-
 <% end%>
 <script type="text/javascript">
-  $(document).ready(function() {
-      $('#has_payment').click(function() {
-      // enable all payment fields 
-      //find the form, and get all of it's inputs
-      //for each input that is not named 'has_payment'
-      // enable it  
-      })
-      $('#user_pay').click(function() {
-// disable all payment fields
-       
-        })
-
-      })
-function enable_payment() {
-
-}
-function disable_payment() {
-
-}
 </script>
 

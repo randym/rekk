@@ -1,83 +1,114 @@
-<%= form_for(@work_order, html: { class: 'form-horizontal' }) do |f| %>
+<%= form_for(@work_order, html: { class: 'form-inline' }) do |f| %>
   <div class='row-fluid'> 
+
     <div class="span3">
-      <label class="control-label" for="client">
+      <label for="client">
         <%= t :client, scope: [:activerecord, :models, :work_order] %>
+      <%= collection_select(:work_order, :client_id, Client.all, :id, :name, prompt: t(:select_client), class: "inline input-large") %>
+
       </label>
-      <div class="controls">
-        <%= collection_select(:work_order, :client_id, Client.all, :id, :name, prompt: t(:select_client)) %>
-      </div>
     </div>
+
     <div class="span3">
-      <label class="control-label" for="client">
+      <label for="owner">
         <%= t :owner, scope: [:activerecord, :models, :work_order] %>
       </label>
-      <div class="controls">
-        <%= collection_select(:work_order, :owner_id, User.all, :id, :name) %>
-      </div>
+      <%= collection_select(:work_order, :owner_id, User.all, :id, :name) %>
     </div>
+
     <div class="span3">
-      <label class="control-label" for="author">
+
+      <label for="author">
         <%= t :author, scope: [:activerecord, :models, :work_order] %>
       </label>
-      <div class="controls">
-        <%= collection_select(:work_order, :author_id, User.all, :id, :name, html: { disabled: :disabled }) %>
-      </div>
+      <%= collection_select(:work_order, :author_id, User.all, :id, :name, html: { disabled: :disabled }) %>
     </div>
+
+
     <div class="span3">
-      <label class="control-label" for="created">
-        <%= t :created, scope: [:activerecord, :models, :work_order] %>
-      </label>
-      <div class="controls">
-        <input type="text" class="input-medium" value="<%= @work_order.created_at || Time.now.strftime('%Y-%m-%d %H:%M') %>" readonly></input>
+      <div class="pull-right">
+        <label for="created">
+          <%= t :created, scope: [:activerecord, :models, :work_order] %>
+        </label>
+        <input type="text" class="" value="<%= @work_order.created_at || Time.now.strftime('%Y-%m-%d %H:%M') %>" readonly></input>
       </div>
+
     </div>
-    <!--    <div class="span2">
-      <label class="control-label" for="updated">
-        <%= t :updated, scope: [:activerecord, :models, :work_order] %>
-      </label>
-      <div class="controls">
-        <input type="text" value="<%= @work_order.updated_at || Time.now.strftime('%Y-%m-%d %H:%M') %>" readonly></input>
-      </div>
-    </div>
-    -->
   </div>
+  <!--
+  <div class="span2">
+    <label for="updated">
+      <%= t :updated, scope: [:activerecord, :models, :work_order] %>
+    </label>
+    <input type="text" class="input-medium" value="<%= @work_order.updated_at || Time.now.strftime('%Y-%m-%d %H:%M') %>" readonly></input>
+  </div> 
+  -->
   <br>
-
-
-
 
   <div class="row-fluid">
     <div class="span7">
-      <label class="control-label">
-        <%= t :client_memo %>
-      </label>
-      <div class="controls">
-      <textarea class="span12" rows="6" id="client_memo" readonly><%= @work_order.client ? @work_order.client.memo : '' %></textarea>
+      <ul class="nav nav-tabs">
+        <li class="active"><a href="#work_order_products" data-toggle="tab">Products</a></li>
+        <li><a href="#work_order_change_log" data-toggle="tab">Change Log</a></li>
+      </ul>
+      <div class="tab-content">
+        <div id="work_order_products" class="tab-pane active">
+        Products
+        </div>
+        <div id="work_order_change_log" class="tab-pane">
+          Change Log
+        </div>
       </div>
-      <br>
-      <label class="control-label" for="memo">
-        <%= t :memo, scope: [:activerecord, :models, :work_order] %>
-      </label>
-      <div class="controls">
-        <%= f.text_area(:memo, rows: 6, class: "span12") %>
-      </div> 
     </div> 
 
     <div class="span5"> 
 
-      <ul class="nav nav-tabs" id="payment_tabs">
-        <li class="active"><a href="#payment_info" data-toggle="tab">Payment</a></li>
+      <ul class="nav nav-tabs">
+        <li class="active"><a href="#client_memo" data-toggle="tab">Client Memo</a></li>
+        <li><a href="#payment_info" data-toggle="tab">Payment</a></li>
+        <li><a href="#sr_memo" data-toggle="tab">Memo</a></li>
       </ul>
-      <div class="tab-content">
-        <div class="tab-pane active" id="payment_info">
-                  <%= render 'payments/form', form: f %>          
-        </div>
 
+      <div class="tab-content">
+  <div class="tab-pane active" id="client_memo">
+          <textarea class="span12" rows="6" id="client_memo" readonly><%= @work_order.client ? @work_order.client.memo : '' %></textarea>
+        </div>
+        <div class="tab-pane" id="payment_info">
+
+          <!-- NOTE this logic is actually wrong - the user should not be able to edit payment options once the SR has been invoiced.
+          With the exception of setting Paid On - the data can still show - but needs to update the form elements dynamically based on state - so we will be re-writing that 
+          lovely payment form partial again soon...
+          -->
+          <% if @work_order.payment.paid_on %>
+            <label class="control-label">
+              <div>PAID:<%= @work_order.payment.paid_on %></div>
+            </label>
+          <% else %>
+            <label class="control-label" for="payment_type">
+              <%= t :payment_type, scope: [:activerecord, :models, :work_order] %>
+            </label>
+
+            <div class="controls"> 
+              <label class="radio inline">
+                <%= f.radio_button :user_pays, false, :checked => !@work_order.user_pays %> 
+                <span class="icon-envelope-alt icon-large"> <%= t(:invoice, scope: [:views, :work_order, :payment_types]) %></span>
+              </label>
+              <label class="radio inline">
+                <%= f.radio_button :user_pays, true,  :checked => @work_order.user_pays %>
+                <span class="icon-user icon-large"> <%= t(:user, scope: [:views, :work_order, :payment_types]) %></span>
+              </label>
+            </div>
+            <br/>
+            <%= render 'payments/form', form: f %>          
+          <% end %>
+        </div>
+      
+        <div class="tab-pane" id="sr_memo">
+          <%= f.text_area(:memo, rows: 6, class: "span12") %>
+        </div>
       </div>
     </div>
   </div>
-</div>
   <div class="actions">
     <%= f.submit %>
   </div>
@@ -87,6 +118,6 @@
 <script type="text/javascript">
   $('#payment_deadline').datepicker()
   $('#paid_on_date_picker').datepicker()
-  $('#payment_tabs a:first').tab('show')
+  //  $('#payment_tabs a:first').tab('show')
 </script>
 <%= render 'clients/add_billing_address' %>

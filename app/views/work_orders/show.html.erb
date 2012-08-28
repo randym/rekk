@@ -1,5 +1,6 @@
 <div class="span122">
 
+  <%= render "shared/error_messages", :target => @work_order %>
   <% flash.each do |name, msg| %>
     <%= content_tag(:div, msg, :id => "flash_#{name}") %>
   <% end %>

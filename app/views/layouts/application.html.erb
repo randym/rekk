@@ -12,12 +12,12 @@
     <%= csrf_meta_tags %>
   </head>
   <body>
-    <div class="navbar navbar-fixed-top">
+    <div class="navbar navbar-inverse navbar-fixed-top">
       <%= javascript_include_tag "application" %>
       <div class="navbar-inner">
         <div class="container-fluid">
           <%= link_to('/') do %>
-            <%= image_tag "reallyenglish-logo.png", class: 'brand', height: '56px' %>
+            <%= image_tag "reallyenglish-logo.png", class: 're-logo'%>
           <% end %>
           <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
             <span class="icon-bar"></span>

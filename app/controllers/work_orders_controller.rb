@@ -17,7 +17,7 @@ class WorkOrdersController < ApplicationController
   # GET /work_orders/1.json
   def show
     @work_order = WorkOrder.find(params[:id], include: :payment)
-    puts @work_order.inspect
+    # This feels wrong - the payment object must be created or we cannot render the nested form
     @work_order.payment ||= Payment.new
     respond_to do |format|
       format.html # show.html.erb
@@ -59,11 +59,12 @@ class WorkOrdersController < ApplicationController
     @work_order = WorkOrder.find(params[:id])
 
     respond_to do |format|
+      puts params[:work_order]
       if @work_order.update_attributes(params[:work_order])
         format.html { redirect_to @work_order, notice: 'Work order was successfully updated.' }
         format.json { head :no_content }
       else
-        format.html { render action: "edit" }
+        format.html { render action: "show" }
         format.json { render json: @work_order.errors, status: :unprocessable_entity }
       end
     end
