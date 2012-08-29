@@ -31,6 +31,17 @@ class WorkOrder < ActiveRecord::Base
     end
   end
 
+  def self.search(params)
+    scoped= WorkOrder
+    if params[:client_id].present?
+      scoped = scoped.where(client_id: params[:client_id])
+    end
+    if params[:owner_id].present?
+      scoped = scoped.where(owner_id: params[:owner_id])
+    end
+    scoped
+  end
+
   def self.by_author(user)
     where(author_id: user.id)
   end

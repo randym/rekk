@@ -33,4 +33,5 @@ class Client < ActiveRecord::Base
     where(user_id:  user.id)
   end
 
+  
 end

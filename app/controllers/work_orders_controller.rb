@@ -1,11 +1,10 @@
 class WorkOrdersController < ApplicationController
   protect_from_forgery
-  before_filter :work_orders_list, only: [:show]
+  before_filter :work_orders_list, only: [:index]
   # GET /work_orders
   # GET /work_orders.json
   def index
     # how to deal with search, selfish and status params?
-    @work_orders = WorkOrder.scoped.page params[:page]
     @clients = Client.all
     respond_to do |format|
       format.html # index.html.erb
@@ -31,6 +30,7 @@ class WorkOrdersController < ApplicationController
     @work_order = WorkOrder.new
     @work_order.author = current_user
     @work_order.payment ||= Payment.new
+    @work_order.client = Client.find(params[:client_id]) if params[:client_id]
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @work_order }
@@ -83,6 +83,8 @@ class WorkOrdersController < ApplicationController
   end
   private
   def work_orders_list
-    @work_orders = params[:alternate] ? WorkOrder.all : WorkOrder.by_owner(current_user)
+    params[:owner_id] = current_user.id if params[:selfish] == "true"
+    puts params
+    @work_orders = WorkOrder.search(params).page(params[:page])
   end
 end

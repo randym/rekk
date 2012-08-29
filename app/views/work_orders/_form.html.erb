@@ -4,9 +4,10 @@
     <div class="span3">
       <label for="client">
         <%= t :client, scope: [:activerecord, :models, :work_order] %>
-      <%= collection_select(:work_order, :client_id, Client.all, :id, :name, prompt: t(:select_client), class: "inline input-large") %>
 
       </label>
+      <%= f.hidden_field :client_id, value: @work_order.client.id %>
+      <input type="text" class="" value="<%= @work_order.client.local_name %>" readonly></input>
     </div>
 
     <div class="span3">
