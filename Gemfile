@@ -6,6 +6,8 @@ gem 'pg'
 gem 'omniauth-google-apps'
 gem 'thin'
 gem 'kaminari'
+gem 'acts_as_commentable'
+gem 'axlsx'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'

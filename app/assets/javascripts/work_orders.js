@@ -10,8 +10,37 @@ $(document).ready(function() {
   var work_order =  {
 
     init: function(options) {
+      this.setup_comment_handlers();
+    },
+
+    setup_comment_handlers: function() {
+      $('#comment_modal').live('hidden', function() {
+          $(this).remove();
+      });
+
+      $('.add-comment').live('ajax:success', function(xhr, data, status) {
+        $(data).modal('show');
+        $('#comment_modal').find('form').live('ajax:success', function(xhr, data, status) {
+          $('.add-comment').closest('ul').prepend($(data));
+          $('#comment_modal').modal('hide');
+        });
+      });
+
+      $('.edit-comment').live('ajax:success', function(xhr, data, status) {
+        var el = $(this).closest('.comment');
+        $(data).modal('show');
+        $('#comment_modal').find('form').live('ajax:success', function(xhr, data, status) {
+          el.replaceWith($(data));
+          $('#comment_modal').modal('hide');
+        });
+      });
+
+      $('.delete-comment').live('ajax:success', function(xhr, data, status) {
+        $(this).closest('.comment').remove();
+      });
 
     },
+
     payment_fields: function() {
       return $('#payment_info input[type!=radio], #payment_info select, #payment_info .btn');
     },
@@ -51,7 +80,7 @@ $(document).ready(function() {
                 .text(address.company_name));
       } );// org memo
       if($("#work_order_user_pays_false").attr('checked')) {
-      $('#work_order_payment_attributes_bill_to').val(client.local_name);
+        $('#work_order_payment_attributes_bill_to').val(client.local_name);
       }
       // billing addresses{O
     },
@@ -72,9 +101,11 @@ $(document).ready(function() {
     var billing_address = new ModalEditForm({ model: 'billing_address', callback: function(data) { work_order.add_billing_address(data); } });
     billing_address.show();
   });
+
   $('#work_order_user_pays_false').click(function() { work_order.enable_payment(); });
   $('#work_order_user_pays_true').click(function() { work_order.disable_payment(); });
   if($('#work_order_user_pays_true').attr('checked')) {
     work_order.disable_payment();
   }
+  work_order.init();
 });

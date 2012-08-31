@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120718031251) do
+ActiveRecord::Schema.define(:version => 20120831074552) do
 
   create_table "billing_addresses", :force => true do |t|
     t.integer  "client_id",       :null => false
@@ -35,6 +35,20 @@ ActiveRecord::Schema.define(:version => 20120718031251) do
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
   end
+
+  create_table "comments", :force => true do |t|
+    t.string   "title",            :limit => 50, :default => ""
+    t.text     "comment"
+    t.integer  "commentable_id"
+    t.string   "commentable_type"
+    t.integer  "user_id"
+    t.datetime "created_at",                                     :null => false
+    t.datetime "updated_at",                                     :null => false
+  end
+
+  add_index "comments", ["commentable_id"], :name => "index_comments_on_commentable_id"
+  add_index "comments", ["commentable_type"], :name => "index_comments_on_commentable_type"
+  add_index "comments", ["user_id"], :name => "index_comments_on_user_id"
 
   create_table "contacts", :force => true do |t|
     t.integer  "client_id"
@@ -108,11 +122,16 @@ ActiveRecord::Schema.define(:version => 20120718031251) do
   end
 
   create_table "work_order_products", :force => true do |t|
-    t.integer "work_order_id", :null => false
-    t.integer "product_id",    :null => false
+    t.integer "work_order_id",                       :null => false
+    t.integer "product_id",                          :null => false
     t.integer "count"
     t.integer "fee"
     t.text    "memo"
+    t.string  "schedule_unit"
+    t.integer "schedule_count"
+    t.date    "start_date"
+    t.date    "end_date"
+    t.boolean "is_fixed_schedule", :default => true
   end
 
   create_table "work_orders", :force => true do |t|

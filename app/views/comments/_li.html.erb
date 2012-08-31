@@ -1,0 +1,17 @@
+<% comment = @comment unless comment %>
+<li class="comment">
+<div>
+
+  <span><%= comment.created_at.strftime("%Y-%m-%d %H:%M") %></span>
+  <b><%= comment.user.name if comment.user %></b>
+  <span>: <%= comment.title %></span>
+  <span class="pull-right">
+    <% if comment.user == @current_user %>
+      <%= link_to t(:delete), comment_path(comment), method: :delete, remote: true, class: 'delete-comment' %>
+      <%= link_to t(:edit), edit_comment_path(comment), remote: true, class: 'edit-comment' %>
+    <% end %>
+  </span>
+</div>
+<pre><%= comment.comment %></pre>
+</li>
+

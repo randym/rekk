@@ -18,6 +18,8 @@ class WorkOrder < ActiveRecord::Base
 
   default_scope order('created_at desc')
 
+  acts_as_commentable
+
   paginates_per 2
 
   def user_pays

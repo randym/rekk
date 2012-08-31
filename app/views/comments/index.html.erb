@@ -1,0 +1,6 @@
+<%= javascript_include_tag "work_orders" %>
+<ul>
+<% @comments.each do |comment| %>
+  <%= render 'li', comment: comment %>
+<% end %>
+</ul>

@@ -1,0 +1,19 @@
+<!-- a reductive searchable list of products that update the product name in the form -->
+<div id="work_order_product_modal">
+  <%= form_for @work_order_product, remote: true do |f| %>
+    <div clas="modal-header">
+      Work Order Comment
+    </div>
+    <div class="modal-body">
+      <div id="product_list">
+      </div>
+      <div id="work_order_product">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a href="#" class="btn" data-dismiss="modal"><%= t :cancel %></a>
+      <button type="submit" class="btn btn-primary"><%= t :save %></button>
+    </div>
+
+  <% end %>
+</div>

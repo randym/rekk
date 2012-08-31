@@ -7,5 +7,18 @@
 .tab-pane.scrollable {
   height: 115px;
   overflow-y:scroll;
-
+}
+#work_order_comments {
+  height: 300px;
+  overflow-y: auto;
+  margin: 5px;
+  padding: 5px;
+ background-color: #fff;
+}
+.delete-comment {
+color: #D14;
+margin-right:10px;
+}
+.fixed-modal-input-width {
+width: 520px;
 }

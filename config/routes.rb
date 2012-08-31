@@ -1,20 +1,22 @@
 Rekk::Application.routes.draw do
 
   resources :work_orders, except: [:edit]
-
-  root :to => 'home#index'
+  resources :comments
   resources :billing_addresses, only: [:create]
   resources :home, only: [:index]
-  get '/login', to: 'home#login', as: :login
   resources :users, only: [:index, :show, :destroy]
   resources :clients
   resources :products, :product_types, except: [:destroy, :edit]
   resources :roles
   resources :contacts, only: [:index, :show]
+
+  get '/login', to: 'home#login', as: :login
   get   '/logout', to: 'sessions#logout'
+
   match '/auth/:provider/callback', to: 'sessions#create'
   match '/auth/failure', to: 'sessions#failure' 
 
+  root :to => 'home#index'
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

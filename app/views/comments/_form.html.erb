@@ -1,0 +1,29 @@
+<div class="modal" id="comment_modal">
+  <%= form_for @comment, remote: true do |f| %>
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      <b><%= t :work_order_comment %></b><span> - </span><span><%= @comment.user.name %></span>
+    </div>
+    <div class="modal-body">
+      <%= f.hidden_field :commentable, value: @comment.commentable.class %>
+      <%= f.hidden_field :commentable_id, value: @comment.commentable.id %>
+      <div class="control-group">
+        <label class="control-label" for="title">
+          <%= t :title, scope: [:activerecord, :models, :comment] %>
+        </label>
+        <%= f.text_field :title, class: "fixed-modal-input-width" %>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="title">
+          <%= t :comment, scope: [:activerecord, :models, :comment] %>
+        </label>
+
+        <%= f.text_area :comment, rows: 10, class: "fixed-modal-input-width" %>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a href="#" class="btn" data-dismiss="modal"><%= t :cancel %></a>
+      <button type="submit" class="btn btn-primary"><%= t :save %></button>
+    </div>
+  <% end %>
+</div>
