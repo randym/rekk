@@ -1,0 +1,11 @@
+<div class="picker">
+  <div class="btn-bar">
+    <input class="search" type="text" placeholder="<%= I18n.t(:search)%>"/>
+  </div>
+  <ul class="picker-list">
+    <% @products.each do |product| %>
+      <%= render 'products/li', product: product %>
+    <% end %>
+  </ul>
+</div>
+

@@ -6,10 +6,15 @@ Rekk::Application.routes.draw do
   resources :home, only: [:index]
   resources :users, only: [:index, :show, :destroy]
   resources :clients
-  resources :products, :product_types, except: [:destroy, :edit]
+  resources :products do
+    collection do
+      get :picker
+    end
+  end
+  resources :product_types, except: [:destroy, :edit]
   resources :roles
   resources :contacts, only: [:index, :show]
-
+  resources :work_order_products
   get '/login', to: 'home#login', as: :login
   get   '/logout', to: 'sessions#logout'
 

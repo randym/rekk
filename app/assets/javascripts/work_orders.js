@@ -10,9 +10,27 @@ $(document).ready(function() {
   var work_order =  {
 
     init: function(options) {
+      this.setup_product_handlers();
       this.setup_comment_handlers();
     },
+    setup_product_handlers: function() {
+     $('#work_order_product_modal').live('hidden', function() {
+          $(this).remove();
+     });
+     $('.add-work-order-product').live('ajax:success', function(xhr, data, status) {
+       $(data).modal({ backdrop: false });
+       $('#work_order_product_modal').find('form').live('ajax:success', function(xhr, data, status) {
+       $('#work_order_product_modal').modal('hide');
+       response = $(data);
+       if (response.get()[0].tagName == 'li') {
+         $('.add-work-order-product').closest('ul').prepend($(response));
+       } else {
+         $(response).modal({ backdrop: false });
+       }
+       });
+     });
 
+    },
     setup_comment_handlers: function() {
       $('#comment_modal').live('hidden', function() {
           $(this).remove();
@@ -107,5 +125,8 @@ $(document).ready(function() {
   if($('#work_order_user_pays_true').attr('checked')) {
     work_order.disable_payment();
   }
+  $('#payment_deadline').datepicker();
+  $('#paid_on_date_picker').datepicker();
   work_order.init();
+
 });

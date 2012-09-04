@@ -1,6 +1,6 @@
 class WorkOrderProductsController < ApplicationController
   before_filter :find_work_order, only: [:index, :new, :create, :update]
-
+  before_filter :load_products, only: [:new, :create, :update]
   # Get /work_order_products
   # Get /work_order_products.json
   def index
@@ -24,10 +24,10 @@ class WorkOrderProductsController < ApplicationController
   # GET /work_order_products/new
   # GET /work_order_products/new.json
   def new
-    @product = WorkOrderProduct.new(options_for_work_order)
+    @work_order_product = WorkOrderProduct.new(options_for_work_order)
     respond_to do |format|
       format.html { render layout: false }
-      format.json { render json: @product }
+      format.json { render json: @work_order_product }
     end
   end
 
@@ -40,15 +40,15 @@ class WorkOrderProductsController < ApplicationController
 
   # GET /comments/
   def create
-    @product = WorkOrderProduct.find_or_initialize_by_id(params[:id])
-    @product.update_attributes(params[:work_order_product])
+    @work_order_product = WorkOrderProduct.find_or_initialize_by_id(params[:id])
+    @work_order_product.update_attributes(params[:work_order_product])
     respond_to do |format|
-      if @product.save
+      if @work_order_product.save
         format.html { render action: "show", layout: false }
-        format.json { render json: @product }
+        format.json { render json: @work_order_product }
       else
         format.html { render action: "new", layout: false }
-        format.json { render json: @comment.errors, status: :unprocessable_entity }
+        format.json { render json: @work_order_product.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -58,12 +58,15 @@ class WorkOrderProductsController < ApplicationController
   end
 
   private
-
-  def find_work_order
-    @work_order = WorkOrder.find_by_id(params[:work_order_id])
+  def load_products
+    @products = Product.all
   end
 
-  def options_for_work_order_product
-    { work_order: @work_order }
+  def find_work_order
+    @work_order = WorkOrder.find_by_id(params[:work_order_id] || params[:work_order_product][:work_order_id])
+  end
+
+  def options_for_work_order
+    { work_order_id: @work_order.id }
   end
 end

@@ -5,6 +5,10 @@ class ProductsController < ApplicationController
   def index
   end
 
+  def picker
+    @products = Product.where(expired: false).all
+  end
+
   def show
     @product = Product.find(params[:id])
   end

@@ -9,4 +9,8 @@ class Product < ActiveRecord::Base
 
   scope :active, where(expired: false)
 
+  def picker_string
+    "#{id}: #{name} #{price}"
+  end
+
 end

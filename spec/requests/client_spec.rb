@@ -57,10 +57,13 @@ describe 'Client' do
         fill_in 'client_accounting_code', with: @client.accounting_code
         fill_in 'client_memo', with: @client.memo
       end
+      it 'redirects to clients' do
+        click_on 'save_client'
+        current_path.should == '/clients'
+      end
 
       it 'creates a new client when the form is filled in and saved' do
         click_on 'save_client'
-        current_path.should == '/clients'
         page.should have_content(@client.name)
       end
 
@@ -68,7 +71,6 @@ describe 'Client' do
         before do
           page.execute_script("$('#add_contact').click()")
           # this is to give the bootstrap modal time to render 
-          sleep 5 
           within('#add_contact_form') do
             fill_in 'name', with: @contact.name
             fill_in 'email', with: @contact.email
@@ -80,7 +82,6 @@ describe 'Client' do
 
           # and again to let bootstrap modal get off the screen
 
-          sleep 5
         end
 
         it 'renders the added contact' do
@@ -94,7 +95,6 @@ describe 'Client' do
 
         it 'renders the edit form polulated with the contact data when you click the edit-contact button' do
           find('.edit-contact').click
-          sleep 5
           within('#add_contact_form') do
             find_field('name').value.should == @contact.name 
             find_field('email').value.should == @contact.email
@@ -116,7 +116,6 @@ describe 'Client' do
         before do
           page.execute_script("$('#add_billing_address').click()")
           # this is to give the bootstrap modal time to render 
-          sleep 5 
           within('#add_billing_address_form') do
             fill_in 'postal_code', with: @billing_address.postal_code
             fill_in 'address_1', with: @billing_address.address_1
@@ -130,7 +129,6 @@ describe 'Client' do
 
           # and again to let bootstrap modal get off the screen
 
-          sleep 5
         end
 
         it 'renders the added billing_address' do
@@ -146,7 +144,6 @@ describe 'Client' do
         it 'renders the edit form polulated with the billing address data when you click the edit-billing_address button' do
           find('.edit-billing_address').click
 
-          sleep 5
           within('#add_billing_address_form') do
             find_field('postal_code').value.should == @billing_address.postal_code
             find_field('address_1').value.should == @billing_address.address_1
