@@ -1,0 +1,9 @@
+<%= javascript_include_tag "work_orders" %>
+<table id="work_order_products">
+  <tbody>
+    <% @work_order_products.each do |product| %>
+      <%= render 'li', work_order_product: product %>
+    <% end %>
+  </tbody>
+</table>
+

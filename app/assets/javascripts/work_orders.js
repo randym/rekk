@@ -4,55 +4,84 @@
 ahh but I dont WANT to use coffeescript!
 */
 
-
 $(document).ready(function() {
 
   var work_order =  {
 
     init: function(options) {
+      // TODO extract these handlers into a jquery plug in
+      // modal_association or something...
       this.setup_product_handlers();
       this.setup_comment_handlers();
     },
     setup_product_handlers: function() {
-     $('#work_order_product_modal').live('hidden', function() {
-          $(this).remove();
-     });
-     $('.add-work-order-product').live('ajax:success', function(xhr, data, status) {
-       $(data).modal({ backdrop: false });
-       $('#work_order_product_modal').find('form').live('ajax:success', function(xhr, data, status) {
-       $('#work_order_product_modal').modal('hide');
-       response = $(data);
-       if (response.get()[0].tagName == 'li') {
-         $('.add-work-order-product').closest('ul').prepend($(response));
-       } else {
-         $(response).modal({ backdrop: false });
-       }
-       });
-     });
+      $('#work_order_product_modal').live('hidden', function() {
+        $(this).remove();
+      });
 
+      $('.add-work-order-product').live('ajax:success', function(xhr, data, status) {
+        $(data).modal({ backdrop: false });
+      });
+      
+      $('.new_work_order_product').live('ajax:success', function(xhr, data, status) {
+        $('#work_order_product_modal').modal('hide');
+        $('#work_order_products tbody').append($(data));
+      });
+
+      $('#work_order_product_modal form').live('ajax:error', function(xhr, data, status) {
+        $('#work_order_product_modal').modal('hide');
+        $(data.responseText).modal({ backdrop: false });
+      });
+
+      $('.delete-work-order-product').live('ajax:success', function(xhr, data, status) {
+        $(this).closest('.work-order-product').remove();
+      });
+
+      $('.edit_work_order_product').live('ajax:success', function(xhr, data, status) {
+          el = $(data);
+          $('#' + el.attr('id')).replaceWith(el);
+          $('#work_order_product_modal').modal('hide');
+      });
+
+      $('.edit-work-order-product').live('ajax:success', function(xhr, data, status) {
+        $(data).modal({ backdrop: false });
+      });
     },
     setup_comment_handlers: function() {
       $('#comment_modal').live('hidden', function() {
-          $(this).remove();
+        $(this).remove();
       });
 
+      // Show the form for a new comment
       $('.add-comment').live('ajax:success', function(xhr, data, status) {
         $(data).modal('show');
-        $('#comment_modal').find('form').live('ajax:success', function(xhr, data, status) {
-          $('.add-comment').closest('ul').prepend($(data));
-          $('#comment_modal').modal('hide');
-        });
       });
 
+      // handle errors in both the edit and add forms
+      $('#comment_modal form').live('ajax:error', function(xhr, data, status) {
+        $('#comment_modal').modal('hide');
+        $(data.responseText).modal({backdrop: false});
+      });
+
+      // handle successful new comment addition
+      $('.new_comment').live('ajax:success', function(xhr, data, status) {
+        $('#comments').prepend($(data));
+        $('#comment_modal').modal('hide');
+      });
+
+      // show form for editing comment
       $('.edit-comment').live('ajax:success', function(xhr, data, status) {
-        var el = $(this).closest('.comment');
         $(data).modal('show');
-        $('#comment_modal').find('form').live('ajax:success', function(xhr, data, status) {
-          el.replaceWith($(data));
-          $('#comment_modal').modal('hide');
-        });
       });
 
+      // handle successful comment edit 
+      $('.edit_comment').live('ajax:success', function(xhr, data, status) {
+          el = $(data);
+          $('#' + el.attr('id')).replaceWith(el);
+          $('#comment_modal').modal('hide');
+      });
+
+      // handle deleting a comment
       $('.delete-comment').live('ajax:success', function(xhr, data, status) {
         $(this).closest('.comment').remove();
       });

@@ -1,4 +1,12 @@
 <% work_order_product = @work_order_product if @work_order_product %>
-<li>
-<%= work_order_product.product.name %>
-</li>
+<tr class="work-order-product" id="work_order_product_<%= work_order_product.id %>">
+  <td><%= link_to :edit, edit_work_order_product_path(work_order_product), remote: true, class: 'edit-work-order-product' %></td>
+  <td>
+    <input id="work_order_product_position" name="work_order_product[position]" type="hidden" value="<%=work_order_product.position%>">
+  <%= work_order_product.product.name %></td>
+  <td><%= work_order_product.count %></td>
+  <td><%= work_order_product.fee %></td>
+  <td><%= work_order_product.schedule %></td>
+  <td><%= work_order_product.memo %></td>
+  <td><%= link_to '&times;'.html_safe, work_order_product, method: :delete, remote: true, class: 'delete-work-order-product' %></td>
+</tr>

@@ -1,7 +1,7 @@
 <div class="modal hide" id="work_order_product_modal">
   <%= form_for @work_order_product, remote: true do |f| %>
     
-    <%= f.hidden_field :work_order_id, value: @work_order.id%>
+    <%= f.hidden_field :work_order_id, value: @work_order_product.work_order_id%>
     <div class="modal-header">
       Work Order Comment
     </div>

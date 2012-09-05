@@ -1,10 +1,10 @@
 class WorkOrderProductsController < ApplicationController
   before_filter :find_work_order, only: [:index, :new, :create, :update]
-  before_filter :load_products, only: [:new, :create, :update]
+  before_filter :load_products, only: [:edit, :new, :create, :update]
   # Get /work_order_products
   # Get /work_order_products.json
   def index
-    @products = @work_order.work_order_products.all
+    @work_order_products = @work_order.work_order_products.all
     respond_to do |format|
       format.html
       format.json { render json: @products }
@@ -14,10 +14,10 @@ class WorkOrderProductsController < ApplicationController
   # GET /work_order_products/#id/edit
   # GET /work_order_products/#id/edit.json
   def edit
-    @product = WorkOrderProduct.find(params[:id])
+    @work_order_product = WorkOrderProduct.find(params[:id])
     respond_to do |format|
       format.html { render action: "new", layout: false }
-      format.json { render json: @product }
+      format.json { render json: @work_order_product }
     end
   end
 
@@ -47,7 +47,7 @@ class WorkOrderProductsController < ApplicationController
         format.html { render action: "show", layout: false }
         format.json { render json: @work_order_product }
       else
-        format.html { render action: "new", layout: false }
+        format.html { render action: "new", layout: false, status: :unprocessable_entity }
         format.json { render json: @work_order_product.errors, status: :unprocessable_entity }
       end
     end

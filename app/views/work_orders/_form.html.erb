@@ -48,59 +48,46 @@
   <br>
 
   <div class="row-fluid">
-    <div class="span7">
+    <div class="span12">
       <ul class="nav nav-tabs" style="margin-bottom: 0px">
-        <li class="active"><a href="#work_order_products" data-toggle="tab">Products</a></li>
+        <li class="active"><a href="#work_order_products_pane" data-toggle="tab">Products</a></li>
+        <li><a href="#memo" data-toggle="tab">Memo</a></li>
+        <li><a href="#payment_info" data-toggle="tab">Payment</a></li>
+        <li><a href="#client_memo" data-toggle="tab">Client Memo</a></li>
         <li><a href="#work_order_change_log" data-toggle="tab">Change Log</a></li>
       </ul>
+
       <div class="tab-content">
-        <div id="work_order_products" class="tab-pane active">
+
+        <!-- Work Order Products -->
+        <div id="work_order_products_pane" class="tab-pane active">
           <div class="btn-toolbar">
             <div class="btn-group">
               <%= link_to 'add', new_work_order_product_path(work_order_id: @work_order.id), remote: true, class: 'btn add-work-order-product' %>
               <%= link_to 'peruse', work_order_products_path(work_order_id: @work_order.id), class: 'btn', target: '_blank' %>
             </div>
           </div>
-          <ul id="work_order_products">
-            <% @work_order.work_order_products.each do |product| %>
+          <table class="table" id="work_order_products">
+            <tbody>
+            <% @work_order.work_order_products.each do |product| %> 
               <%= render 'work_order_products/li', work_order_product: product %>
-            <% end %>
-          </ul>
+            <% end%>
+          </tbody>
+          </table>
         </div>
-        <div id="work_order_change_log" class="tab-pane">
-          <div class="btn-toolbar">
-            <div class="btn-group">
-              <%= link_to 'add', new_comment_path(commentable_id: @work_order.id, type: @work_order.class), remote: true, class: 'btn add-comment' %>
-              <%= link_to 'peruse', comments_path(commentable_id: @work_order.id, type: @work_order.class), class: 'btn', target: '_blank' %>
-            </div>
-          </div>
-          <ul id="work_order_comments">
-            <% @work_order.comments.each do |comment| %>
-              <%= render 'comments/li', comment: comment %>
-            <% end %>
-          </ul>
+
+        <!-- Memo -->
+        <div class="tab-pane" id="memo">
+          <%= f.text_area(:memo, rows: 6, class: "span12") %>
         </div>
-      </div>
-    </div> 
 
-    <div class="span5"> 
+        <!-- Payment -->
+       <div class="tab-pane" id="payment_info">
 
-      <ul class="nav nav-tabs">
-        <li class="active"><a href="#client_memo" data-toggle="tab">Client Memo</a></li>
-        <li><a href="#payment_info" data-toggle="tab">Payment</a></li>
-        <li><a href="#sr_memo" data-toggle="tab">Memo</a></li>
-      </ul>
-
-      <div class="tab-content">
-        <div class="tab-pane active" id="client_memo">
-          <textarea class="span12" rows="6" id="client_memo" readonly><%= @work_order.client ? @work_order.client.memo : '' %></textarea>
-        </div>
-        <div class="tab-pane" id="payment_info">
-
-          <!-- NOTE this logic is actually wrong - the user should not be able to edit payment options once the SR has been invoiced.
-          With the exception of setting Paid On - the data can still show - but needs to update the form elements dynamically based on state - so we will be re-writing that 
-          lovely payment form partial again soon...
-          -->
+         <!-- TODO - 
+         When the status of the service request is invoiced, shipping or closed - these fields need
+         to be disabled with the exception of paid on.
+         -->
           <% if @work_order.payment.paid_on %>
             <label class="control-label">
               <div>PAID:<%= @work_order.payment.paid_on %></div>
@@ -125,11 +112,31 @@
           <% end %>
         </div>
 
-        <div class="tab-pane" id="sr_memo">
-          <%= f.text_area(:memo, rows: 6, class: "span12") %>
+        <!-- Client Memo -->
+         <div class="tab-pane" id="client_memo">
+          <textarea class="span12" rows="6" id="client_memo" readonly><%= @work_order.client ? @work_order.client.memo : '' %></textarea>
         </div>
+
+        <!-- Change Log -->
+        <div id="work_order_change_log" class="tab-pane">
+          <div class="btn-toolbar">
+            <div class="btn-group">
+              <%= link_to 'add', new_comment_path(commentable_id: @work_order.id, type: @work_order.class), remote: true, class: 'btn add-comment' %>
+              <%= link_to 'peruse', comments_path(commentable_id: @work_order.id, type: @work_order.class), class: 'btn', target: '_blank' %>
+            </div>
+          </div>
+          <ul id="comments">
+            <% @work_order.comments.each do |comment| %>
+              <%= render 'comments/li', comment: comment %>
+            <% end %>
+          </ul>
+        </div>
+   
+
+
       </div>
-    </div>
+    </div> 
+
   </div>
   <div class="actions">
     <%= f.submit %>
